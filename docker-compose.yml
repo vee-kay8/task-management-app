@@ -1,0 +1,132 @@
+# Docker Compose Configuration
+# Purpose: Sets up local development environment with PostgreSQL database
+# Usage: docker-compose up -d (start), docker-compose down (stop)
+
+version: '3.8'
+
+services:
+  # ===================================
+  # POSTGRESQL DATABASE SERVICE
+  # ===================================
+  # This creates a PostgreSQL 15 container for local development
+  db:
+    # Official PostgreSQL image from Docker Hub
+    image: postgres:15-alpine
+    
+    # Container name for easy reference
+    container_name: taskmanagement_postgres
+    
+    # Restart policy - always restart if container stops
+    restart: always
+    
+    # Environment variables for PostgreSQL initialization
+    environment:
+      # Database name to create on first run
+      POSTGRES_DB: taskmanagement_db
+      
+      # PostgreSQL superuser name
+      POSTGRES_USER: taskapp_user
+      
+      # PostgreSQL superuser password (CHANGE IN PRODUCTION!)
+      POSTGRES_PASSWORD: devpassword123
+      
+      # Set timezone to UTC for consistency
+      TZ: UTC
+    
+    # Port mapping: host:container
+    # Access PostgreSQL on localhost:5432
+    ports:
+      - "5432:5432"
+    
+    # Volume mounting for data persistence
+    # Data persists even when container is removed
+    volumes:
+      # Named volume for PostgreSQL data
+      - postgres_data:/var/lib/postgresql/data
+      
+      # Mount initialization scripts (optional)
+      # Any .sql files here will run on first startup
+      - ./database/init:/docker-entrypoint-initdb.d
+    
+    # Health check to ensure database is ready
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taskapp_user -d taskmanagement_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+    # Network for service communication
+    networks:
+      - taskapp_network
+
+  # ===================================
+  # REDIS SERVICE (Optional - for caching)
+  # ===================================
+  # Uncomment if you want to add Redis for caching/sessions
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: taskmanagement_redis
+  #   restart: always
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - taskapp_network
+
+  # ===================================
+  # PGADMIN (Optional - Database GUI)
+  # ===================================
+  # Web interface for managing PostgreSQL database
+  # Uncomment to enable (access at http://localhost:5050)
+  # pgadmin:
+  #   image: dpage/pgadmin4:latest
+  #   container_name: taskmanagement_pgadmin
+  #   restart: always
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@taskapp.com
+  #     PGADMIN_DEFAULT_PASSWORD: admin
+  #   ports:
+  #     - "5050:80"
+  #   networks:
+  #     - taskapp_network
+  #   depends_on:
+  #     - db
+
+# ===================================
+# VOLUMES
+# ===================================
+# Named volumes for data persistence
+volumes:
+  # PostgreSQL data volume
+  postgres_data:
+    driver: local
+  
+  # Redis data volume (if enabled)
+  # redis_data:
+  #   driver: local
+
+# ===================================
+# NETWORKS
+# ===================================
+# Custom network for service communication
+networks:
+  taskapp_network:
+    driver: bridge
+
+# ===================================
+# USAGE INSTRUCTIONS
+# ===================================
+# Start services: docker-compose up -d
+# Stop services: docker-compose down
+# View logs: docker-compose logs -f
+# View specific service logs: docker-compose logs -f db
+# Restart service: docker-compose restart db
+# Remove all (including volumes): docker-compose down -v
+#
+# Connect to PostgreSQL:
+#   Host: localhost
+#   Port: 5432
+#   Database: taskmanagement_db
+#   Username: taskapp_user
+#   Password: devpassword123
