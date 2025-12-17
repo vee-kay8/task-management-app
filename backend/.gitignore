@@ -1,0 +1,41 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Database
+*.db
+*.sqlite
+instance/
+
+# Flask
+.env
+.flaskenv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Uploads
+uploads/
+attachments/
+
+# Migrations
+migrations/versions/*.pyc
+
+# Logs
+*.log
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+
+# OS
+.DS_Store

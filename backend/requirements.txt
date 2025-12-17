@@ -1,0 +1,169 @@
+# ============================================================
+# PYTHON DEPENDENCIES FOR TASK MANAGEMENT BACKEND
+# ============================================================
+# This file lists all Python packages our application needs
+# Install with: pip install -r requirements.txt
+
+# ============================================================
+# WEB FRAMEWORK
+# ============================================================
+# Flask: Lightweight web framework for building APIs
+# Think of it as the foundation/skeleton of our backend
+Flask==3.0.0
+
+# Werkzeug: WSGI utilities (comes with Flask, but specified for version)
+# Handles HTTP requests and responses
+Werkzeug==3.0.1
+
+# ============================================================
+# DATABASE
+# ============================================================
+# SQLAlchemy: SQL toolkit and ORM (Object-Relational Mapper)
+# Lets us write Python code instead of SQL queries
+# Example: User.query.all() instead of "SELECT * FROM users"
+SQLAlchemy==2.0.23
+
+# Flask-SQLAlchemy: Flask integration for SQLAlchemy
+# Makes SQLAlchemy work smoothly with Flask
+Flask-SQLAlchemy==3.1.1
+
+# psycopg2-binary: PostgreSQL adapter for Python
+# Allows Python to talk to PostgreSQL database
+psycopg2-binary==2.9.9
+
+# Flask-Migrate: Database migration tool (uses Alembic)
+# Helps manage database schema changes over time
+# Like Git for your database structure
+Flask-Migrate==4.0.5
+
+# ============================================================
+# AUTHENTICATION & SECURITY
+# ============================================================
+# Flask-JWT-Extended: JWT (JSON Web Token) authentication
+# Creates and verifies secure tokens for user login
+Flask-JWT-Extended==4.6.0
+
+# Flask-Bcrypt: Password hashing
+# Encrypts passwords so they're never stored in plain text
+# "password123" becomes "$2b$12$randomhash..."
+Flask-Bcrypt==1.0.1
+
+# PyJWT: JSON Web Token library
+# Core JWT functionality (used by Flask-JWT-Extended)
+PyJWT==2.8.0
+
+# ============================================================
+# DATA VALIDATION & SERIALIZATION
+# ============================================================
+# Marshmallow: Object serialization/deserialization
+# Converts Python objects to JSON and validates input data
+# Example: Checks if email format is valid, age is a number, etc.
+marshmallow==3.20.1
+
+# Flask-Marshmallow: Flask integration for Marshmallow
+Flask-Marshmallow==0.15.0
+
+# marshmallow-sqlalchemy: SQLAlchemy integration for Marshmallow
+# Automatically creates schemas from database models
+marshmallow-sqlalchemy==0.29.0
+
+# email-validator: Email validation
+# Checks if emails are in correct format (user@domain.com)
+email-validator==2.1.0
+
+# ============================================================
+# CORS (Cross-Origin Resource Sharing)
+# ============================================================
+# Flask-CORS: Handles CORS (lets frontend talk to backend)
+# Without this, browser blocks requests from React to Flask
+# Allows: localhost:3000 (React) → localhost:5000 (Flask)
+Flask-CORS==4.0.0
+
+# ============================================================
+# ENVIRONMENT VARIABLES
+# ============================================================
+# python-dotenv: Load environment variables from .env file
+# Keeps secrets (API keys, passwords) out of code
+python-dotenv==1.0.0
+
+# ============================================================
+# AWS S3 (File Storage - Phase 4)
+# ============================================================
+# boto3: AWS SDK for Python
+# Uploads files to Amazon S3 cloud storage
+# Uncomment when ready for Phase 4
+# boto3==1.34.10
+
+# ============================================================
+# HTTP REQUESTS (for external APIs if needed)
+# ============================================================
+# requests: HTTP library for making external API calls
+# Not required for basic functionality, but useful
+requests==2.31.0
+
+# ============================================================
+# UTILITIES
+# ============================================================
+# python-dateutil: Date/time utilities
+# Makes working with dates and timezones easier
+python-dateutil==2.8.2
+
+# pytz: Timezone definitions
+# Handles timezone conversions (UTC, EST, PST, etc.)
+pytz==2024.1
+
+# ============================================================
+# DEVELOPMENT & TESTING
+# ============================================================
+# pytest: Testing framework
+# Write automated tests for your code
+pytest==7.4.3
+
+# pytest-flask: Flask testing utilities
+pytest-flask==1.3.0
+
+# pytest-cov: Test coverage reporting
+# Shows which parts of code are tested
+pytest-cov==4.1.0
+
+# Faker: Generate fake data for testing
+# Creates random names, emails, etc. for test database
+Faker==22.0.0
+
+# ============================================================
+# CODE QUALITY
+# ============================================================
+# black: Code formatter
+# Automatically formats your code to look consistent
+# Uncomment if you want auto-formatting
+# black==23.12.1
+
+# flake8: Code linter
+# Checks for code style issues and potential bugs
+# Uncomment if you want code checking
+# flake8==7.0.0
+
+# ============================================================
+# PRODUCTION SERVER (Optional - for deployment)
+# ============================================================
+# gunicorn: Production WSGI server
+# Much better than Flask's built-in server for production
+# Uncomment when deploying to production
+# gunicorn==21.2.0
+
+# ============================================================
+# INSTALLATION INSTRUCTIONS
+# ============================================================
+# 1. Create virtual environment:
+#    python -m venv venv
+#
+# 2. Activate virtual environment:
+#    - macOS/Linux: source venv/bin/activate
+#    - Windows: venv\Scripts\activate
+#
+# 3. Install all dependencies:
+#    pip install -r requirements.txt
+#
+# 4. Verify installation:
+#    pip list
+# ============================================================
