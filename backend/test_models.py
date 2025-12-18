@@ -10,9 +10,9 @@ from app.models.task import Task, TaskStatus, TaskPriority, Comment, Attachment
 app = create_app('development')
 
 with app.app_context():
-    print("✅ All models imported successfully!")
-    print(f"✅ User model: {User.__tablename__}")
-    print(f"✅ Project model: {Project.__tablename__}")
-    print(f"✅ Task model: {Task.__tablename__}")
-    print(f"✅ Comment model: {Comment.__tablename__}")
+    print("[SUCCESS] All models imported successfully!")
+    print(f"[SUCCESS] User model: {User.__tablename__}")
+    print(f"[SUCCESS] Project model: {Project.__tablename__}")
+    print(f"[SUCCESS] Task model: {Task.__tablename__}")
+    print(f"[SUCCESS] Comment model: {Comment.__tablename__}")
     print("\n🎉 No relationship conflicts!")

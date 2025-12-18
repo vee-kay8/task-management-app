@@ -1,4 +1,4 @@
-# 🎓 Phase 2 - Part 1 Complete: Database Models
+#  Phase 2 - Part 1 Complete: Database Models
 
 ## What We Just Built
 
@@ -7,7 +7,7 @@ We've created the **Python representation** of our database! Think of it like th
 - **Phase 1**: We designed the database structure (SQL tables)
 - **Phase 2 (Part 1)**: We created Python classes that mirror those tables (ORM models)
 
-## 📚 What is ORM? (Simple Explanation)
+##  What is ORM? (Simple Explanation)
 
 **ORM** = **O**bject-**R**elational **M**apping
 
@@ -15,18 +15,18 @@ It's a translator between Python and SQL:
 
 ### Without ORM (Raw SQL):
 ```python
-# Have to write SQL strings 😰
+# Have to write SQL strings 
 cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
 user = cursor.fetchone()
 ```
 
 ### With ORM (SQLAlchemy):
 ```python
-# Write Python code! 😊
+# Write Python code! 
 user = User.query.filter_by(email=email).first()
 ```
 
-## 🗂️ Files We Created
+##  Files We Created
 
 ### 1. **requirements.txt** - Package List
 Lists all Python libraries we need:
@@ -67,10 +67,10 @@ db.session.commit()  # Saves to database
 ```
 
 **Key Features**:
-- ✅ Password hashing (never stores plain text)
-- ✅ User roles (ADMIN, MANAGER, MEMBER, VIEWER)
-- ✅ Email validation
-- ✅ Last login tracking
+-  Password hashing (never stores plain text)
+-  User roles (ADMIN, MANAGER, MEMBER, VIEWER)
+-  Email validation
+-  Last login tracking
 
 #### **app/models/project.py** - Project Models
 ```python
@@ -118,7 +118,7 @@ comment = Comment(
 - `Comment`: Discussion on tasks
 - `Attachment`: Files attached to tasks
 
-## 🧠 Key Concepts Explained
+##  Key Concepts Explained
 
 ### 1. **Database Session**
 Think of it like a shopping cart:
@@ -142,9 +142,9 @@ project.members  # Get all users in project
 ### 3. **Enums**
 Limited choices for fields:
 ```python
-TaskStatus.TODO         # Valid ✅
-TaskStatus.IN_PROGRESS  # Valid ✅
-TaskStatus.FLYING       # Error! Not in enum ❌
+TaskStatus.TODO         # Valid 
+TaskStatus.IN_PROGRESS  # Valid 
+TaskStatus.FLYING       # Error! Not in enum 
 ```
 
 ### 4. **Methods on Models**
@@ -162,7 +162,7 @@ task.mark_complete()             # Mark as done
 task.is_overdue()                # Check if past deadline
 ```
 
-## 🔄 How Models Connect
+##  How Models Connect
 
 ```
 User ─┬─ owns ──→ Project ─┬─ contains ──→ Task
@@ -174,7 +174,7 @@ User ─┬─ owns ──→ Project ─┬─ contains ──→ Task
       └─ commented ──→ Comment ──→ Task
 ```
 
-## 🚀 Next Steps
+##  Next Steps
 
 Now we'll:
 1. **Set up the environment** (install packages)
@@ -182,7 +182,7 @@ Now we'll:
 3. **Build API routes** (authentication endpoints)
 4. **Test the API** (create users, login, etc.)
 
-## 📝 Setup Instructions
+##  Setup Instructions
 
 ### Step 1: Create Virtual Environment
 ```bash
@@ -256,8 +256,8 @@ flask db upgrade
 python run.py
 
 # You should see:
-# 🚀 Task Management API Server Starting...
-# 📍 Running on: http://localhost:5000
+#  Task Management API Server Starting...
+#  Running on: http://localhost:5000
 ```
 
 ### Step 8: Test It!
@@ -274,7 +274,7 @@ curl http://localhost:5000/api/auth/test
 curl http://localhost:5000/api/tasks/test
 ```
 
-## 🐛 Common Issues
+##  Common Issues
 
 ### Issue: "Module not found"
 **Solution**: Make sure virtual environment is activated
@@ -295,28 +295,28 @@ docker ps  # Check if running
 FLASK_PORT=5001
 ```
 
-## 📊 What's in the Database Now?
+##  What's in the Database Now?
 
 After running migrations, your database has:
-- ✅ `users` table
-- ✅ `projects` table
-- ✅ `project_members` table
-- ✅ `tasks` table
-- ✅ `comments` table
-- ✅ `attachments` table
+-  `users` table
+-  `projects` table
+-  `project_members` table
+-  `tasks` table
+-  `comments` table
+-  `attachments` table
 
 Plus all the demo users from Phase 1!
 
-## 🎯 Progress Check
+##  Progress Check
 
-✅ Backend structure created
-✅ Configuration system built
-✅ Database models defined
-✅ Package dependencies listed
-✅ Ready for API routes!
+ Backend structure created
+ Configuration system built
+ Database models defined
+ Package dependencies listed
+ Ready for API routes!
 
 ---
 
 **Next**: We'll build the authentication system (login/register) and task CRUD endpoints!
 
-Let me know when you're ready to continue! 🚀
+Let me know when you're ready to continue! 

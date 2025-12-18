@@ -1,17 +1,17 @@
-# 🎓 Phase 2 - Part 1: Understanding What We Built
+#  Phase 2 - Part 1: Understanding What We Built
 
-## 🎯 Learning Objectives (What You'll Understand)
+##  Learning Objectives (What You'll Understand)
 
 By the end of this document, you'll understand:
-- ✅ What a backend API actually does
-- ✅ How Python talks to databases (ORM)
-- ✅ Why we organize code into models, routes, and services
-- ✅ How Flask creates web applications
-- ✅ What all those files we created actually do
+-  What a backend API actually does
+-  How Python talks to databases (ORM)
+-  Why we organize code into models, routes, and services
+-  How Flask creates web applications
+-  What all those files we created actually do
 
 ---
 
-## 📖 Story Time: The Restaurant Analogy
+##  Story Time: The Restaurant Analogy
 
 Let's use a restaurant to understand our application:
 
@@ -50,7 +50,7 @@ Let's use a restaurant to understand our application:
 
 ---
 
-## 🏗️ Architecture: The Three Layers
+## ️ Architecture: The Three Layers
 
 ### Layer 1: Models (Data Layer)
 **Purpose**: Define what our data looks like
@@ -59,17 +59,17 @@ Let's use a restaurant to understand our application:
 ┌─────────────────────────────────┐
 │        MODELS LAYER             │
 │                                 │
-│  📦 User Model                  │
+│   User Model                  │
 │     - id, email, password       │
 │     - set_password()            │
 │     - check_password()          │
 │                                 │
-│  📦 Task Model                  │
+│   Task Model                  │
 │     - title, description        │
 │     - mark_complete()           │
 │     - is_overdue()              │
 │                                 │
-│  📦 Project Model               │
+│   Project Model               │
 │     - name, status              │
 │     - add_member()              │
 └─────────────────────────────────┘
@@ -87,16 +87,16 @@ Let's use a restaurant to understand our application:
 ┌─────────────────────────────────┐
 │         ROUTES LAYER            │
 │                                 │
-│  🚪 POST /api/auth/register     │
+│   POST /api/auth/register     │
 │     → Create new user           │
 │                                 │
-│  🚪 POST /api/auth/login        │
+│   POST /api/auth/login        │
 │     → Get login token           │
 │                                 │
-│  🚪 GET /api/tasks              │
+│   GET /api/tasks              │
 │     → List all tasks            │
 │                                 │
-│  🚪 POST /api/tasks             │
+│   POST /api/tasks             │
 │     → Create new task           │
 └─────────────────────────────────┘
 ```
@@ -112,12 +112,12 @@ Let's use a restaurant to understand our application:
 ┌─────────────────────────────────┐
 │       SERVICES LAYER            │
 │                                 │
-│  🧠 AuthService                 │
+│   AuthService                 │
 │     - Hash passwords            │
 │     - Create JWT tokens         │
 │     - Verify credentials        │
 │                                 │
-│  🧠 TaskService                 │
+│   TaskService                 │
 │     - Validate task data        │
 │     - Check permissions         │
 │     - Update database           │
@@ -131,7 +131,7 @@ Let's use a restaurant to understand our application:
 
 ---
 
-## 🔍 Deep Dive: What Each File Does
+##  Deep Dive: What Each File Does
 
 ### 1. `run.py` - The Power Button
 
@@ -220,7 +220,7 @@ class Task(db.Model):
 
 ---
 
-## 🔄 The Request Lifecycle (Step-by-Step)
+##  The Request Lifecycle (Step-by-Step)
 
 Let's follow a request from start to finish:
 
@@ -307,7 +307,7 @@ setTasks([...tasks, newTask])
 
 ---
 
-## 🧩 Understanding ORM (Python ↔️ SQL)
+##  Understanding ORM (Python  SQL)
 
 ### Without ORM (Raw SQL) - Hard Way
 ```python
@@ -336,10 +336,10 @@ task = {
 ```
 
 **Problems**:
-- ❌ SQL strings are error-prone
-- ❌ Have to manually map database rows to Python objects
-- ❌ No type checking
-- ❌ Verbose and repetitive
+-  SQL strings are error-prone
+-  Have to manually map database rows to Python objects
+-  No type checking
+-  Verbose and repetitive
 
 ### With ORM (SQLAlchemy) - Easy Way
 ```python
@@ -361,14 +361,14 @@ print(task.status)  # Works!
 ```
 
 **Benefits**:
-- ✅ Write Python, not SQL
-- ✅ Automatic type checking
-- ✅ Less code
-- ✅ Easier to read and maintain
+-  Write Python, not SQL
+-  Automatic type checking
+-  Less code
+-  Easier to read and maintain
 
 ---
 
-## 🔐 Security Concepts
+##  Security Concepts
 
 ### 1. Password Hashing
 
@@ -422,13 +422,13 @@ user_id = data['user_id']  # "123"
 ```
 
 **Benefits**:
-- ✅ No need to send password every request
-- ✅ Token expires automatically
-- ✅ Stateless (server doesn't store sessions)
+-  No need to send password every request
+-  Token expires automatically
+-  Stateless (server doesn't store sessions)
 
 ---
 
-## 📚 Common Patterns You'll See
+##  Common Patterns You'll See
 
 ### Pattern 1: CRUD Operations
 
@@ -490,29 +490,29 @@ project = task.project  # The project this task belongs to
 
 ---
 
-## 🎯 Success Checklist
+##  Success Checklist
 
 Make sure you can do all of these:
 
-### ✅ Environment Setup
+###  Environment Setup
 - [ ] Virtual environment created and activated
 - [ ] All packages installed (`pip list` shows Flask, SQLAlchemy, etc.)
 - [ ] `.env` file created from `.env.example`
 - [ ] PostgreSQL running (`docker ps` shows postgres container)
 
-### ✅ Database Setup
+###  Database Setup
 - [ ] Migrations folder created (`flask db init`)
 - [ ] Initial migration created (`flask db migrate`)
 - [ ] Migration applied (`flask db upgrade`)
 - [ ] Tables exist in database (check with `\dt` in psql)
 
-### ✅ Server Running
+###  Server Running
 - [ ] Server starts without errors (`python run.py`)
 - [ ] Can visit http://localhost:5000
 - [ ] See JSON response with API info
 - [ ] Test routes work (`/api/auth/test`, `/api/tasks/test`)
 
-### ✅ Understanding
+###  Understanding
 - [ ] Can explain what ORM does
 - [ ] Understand what models represent
 - [ ] Know what Flask does
@@ -520,13 +520,13 @@ Make sure you can do all of these:
 
 ---
 
-## 🚀 You're Ready for Part 2!
+##  You're Ready for Part 2!
 
 You now have:
-- ✅ Solid understanding of backend architecture
-- ✅ Working Flask application
-- ✅ Database models created
-- ✅ Development environment setup
+-  Solid understanding of backend architecture
+-  Working Flask application
+-  Database models created
+-  Development environment setup
 
 **Next steps** (Phase 2 - Part 2):
 1. Build authentication endpoints (register, login)
@@ -538,4 +538,4 @@ You now have:
 
 **Questions?** This is complex stuff! It's normal if it takes time to sink in. Re-read sections, try the code examples, and ask questions!
 
-**Feeling confident?** Let's move to Part 2 and build the actual API endpoints! 🎉
+**Feeling confident?** Let's move to Part 2 and build the actual API endpoints! 

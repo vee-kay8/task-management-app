@@ -1,6 +1,6 @@
 # Phase 1: Project Structure & Database Setup
 
-## 📋 What We Accomplished
+##  What We Accomplished
 
 ### 1. Project Foundation
 - Created comprehensive project documentation (`PROJECT_GUIDE.md`)
@@ -37,7 +37,7 @@
 └─────────────────────────────────────────────────────────┘
 ```
 
-## 🗄️ Database Schema Explained
+## ️ Database Schema Explained
 
 ### Tables and Their Purpose
 
@@ -99,7 +99,7 @@ users ──┬──< project_members >──┬── projects
                                  └──< attachments
 ```
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Step 1: Start PostgreSQL
 ```bash
@@ -130,7 +130,7 @@ cp .env.example .env
 # Edit .env with your actual values (or use defaults for development)
 ```
 
-## 📊 Database Features
+##  Database Features
 
 ### 1. **UUID Primary Keys**
 - Globally unique identifiers
@@ -162,7 +162,7 @@ cp .env.example .env
 - Can archive without deleting
 - Preserves historical data
 
-## 🔍 Testing the Database
+##  Testing the Database
 
 ### Demo Users Created
 The database automatically creates 3 demo users:
@@ -196,7 +196,7 @@ WHERE table_schema = 'public';
 SELECT * FROM pg_type WHERE typtype = 'e';
 ```
 
-## 📝 Key Concepts Explained
+##  Key Concepts Explained
 
 ### 1. **Multi-Tier Architecture**
 - **Separation of Concerns**: Each tier has specific responsibility
@@ -216,16 +216,16 @@ SELECT * FROM pg_type WHERE typtype = 'e';
 - Role-based access control
 - Environment variables for secrets
 
-## ✅ Phase 1 Complete!
+##  Phase 1 Complete!
 
 You now have:
-- ✅ Project structure and documentation
-- ✅ PostgreSQL database running in Docker
-- ✅ Complete database schema with 8 tables
-- ✅ Demo data for testing
-- ✅ Environment configuration template
+-  Project structure and documentation
+-  PostgreSQL database running in Docker
+-  Complete database schema with 8 tables
+-  Demo data for testing
+-  Environment configuration template
 
-## 🎯 Next: Phase 2 - Backend API Development
+##  Next: Phase 2 - Backend API Development
 
 In the next phase, we'll build:
 - Flask application structure

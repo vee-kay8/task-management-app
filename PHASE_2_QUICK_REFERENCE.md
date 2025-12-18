@@ -1,6 +1,6 @@
-# 🎓 Phase 2: Backend API - Quick Reference
+#  Phase 2: Backend API - Quick Reference
 
-## 📁 Backend Structure (What We Built)
+##  Backend Structure (What We Built)
 
 ```
 backend/
@@ -34,7 +34,7 @@ backend/
 └── run.py                       # Server entry point
 ```
 
-## 🚀 Quick Start Commands
+##  Quick Start Commands
 
 ```bash
 # 1. Go to backend folder
@@ -65,7 +65,7 @@ python run.py
 # Server runs on: http://localhost:5000
 ```
 
-## 📊 Database Models Cheat Sheet
+##  Database Models Cheat Sheet
 
 ### User Model
 ```python
@@ -175,7 +175,7 @@ db.session.commit()
 comments = Comment.query.filter_by(task_id=task.id).all()
 ```
 
-## 🔑 Common SQLAlchemy Queries
+##  Common SQLAlchemy Queries
 
 ```python
 # Get one record
@@ -223,7 +223,7 @@ project.tasks.all()            # All tasks in project
 task.comments.all()            # All comments on task
 ```
 
-## 🔧 Database Session Operations
+##  Database Session Operations
 
 ```python
 # Add new record
@@ -247,7 +247,7 @@ user.full_name = 'New Name'
 db.session.commit()
 ```
 
-## 🐛 Common Errors & Solutions
+##  Common Errors & Solutions
 
 ### Error: "No module named 'app'"
 **Solution**: Activate virtual environment
@@ -278,7 +278,7 @@ DATABASE_URL=postgresql://taskapp_user:devpassword123@localhost:5432/taskmanagem
 flask db upgrade
 ```
 
-## 📚 Helpful Commands
+##  Helpful Commands
 
 ### Flask-Migrate Commands
 ```bash
@@ -312,18 +312,18 @@ flask shell
 >>> print(users)
 ```
 
-## 🎯 Status Check
+##  Status Check
 
 At this point, you have:
-- ✅ Backend folder structure
-- ✅ Flask application configured
-- ✅ Database models created
-- ✅ All dependencies installed
-- ✅ Server running on port 5000
+-  Backend folder structure
+-  Flask application configured
+-  Database models created
+-  All dependencies installed
+-  Server running on port 5000
 
 **Next**: Build authentication and CRUD endpoints!
 
-## 📖 Further Reading
+##  Further Reading
 
 - Flask docs: https://flask.palletsprojects.com/
 - SQLAlchemy docs: https://docs.sqlalchemy.org/

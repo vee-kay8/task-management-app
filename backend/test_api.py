@@ -41,7 +41,7 @@ def print_section(title):
 
 def print_test(name, success=True):
     """Print test result"""
-    status = "✅ PASS" if success else "❌ FAIL"
+    status = "[SUCCESS] PASS" if success else "[FAILED] FAIL"
     print(f"{status} - {name}")
 
 
@@ -78,7 +78,7 @@ def make_request(method, endpoint, data=None, token=None, params=None):
         
         return response
     except requests.exceptions.ConnectionError:
-        print("❌ ERROR: Cannot connect to server. Is it running?")
+        print("[FAILED] ERROR: Cannot connect to server. Is it running?")
         exit(1)
 
 
@@ -470,7 +470,7 @@ def main():
         test_error_handling()
         
         print("\n" + "=" * 60)
-        print("  ✅ ALL TESTS COMPLETED")
+        print("  [SUCCESS] ALL TESTS COMPLETED")
         print("=" * 60)
         print("\n📊 Test Summary:")
         print(f"   Registered Users: {len([k for k in ids if 'user' in k])}")
@@ -483,7 +483,7 @@ def main():
     except KeyboardInterrupt:
         print("\n\n⚠️  Tests interrupted by user")
     except Exception as e:
-        print(f"\n\n❌ Unexpected error: {e}")
+        print(f"\n\n[FAILED] Unexpected error: {e}")
         import traceback
         traceback.print_exc()
 

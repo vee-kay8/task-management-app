@@ -1,4 +1,4 @@
-# 🏗️ Architecture Diagrams
+# ️ Architecture Diagrams
 
 ## Multi-Tier Architecture Overview
 

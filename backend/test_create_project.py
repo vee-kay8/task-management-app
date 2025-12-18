@@ -25,13 +25,13 @@ try:
     if response.status_code == 200:
         login_result = response.json()
         token = login_result['access_token']
-        print("✅ Login successful!")
+        print("[SUCCESS] Login successful!")
         print(f"Token: {token[:50]}...")
     else:
-        print(f"❌ Login failed: {response.text}")
+        print(f"[FAILED] Login failed: {response.text}")
         exit(1)
 except Exception as e:
-    print(f"❌ Error during login: {e}")
+    print(f"[ERROR] Error during login: {e}")
     exit(1)
 
 # Now try to create a project
@@ -60,12 +60,12 @@ try:
     print(f"Response: {json.dumps(response.json(), indent=2)}")
     
     if response.status_code == 201:
-        print("\n✅ Project created successfully!")
+        print("\n[SUCCESS] Project created successfully!")
     else:
-        print(f"\n❌ Failed to create project")
+        print(f"\n[FAILED] Failed to create project")
         
 except Exception as e:
-    print(f"❌ Error during project creation: {e}")
+    print(f"[ERROR] Error during project creation: {e}")
     print(f"Response text: {response.text if 'response' in locals() else 'No response'}")
 
 # List projects to verify
@@ -80,11 +80,11 @@ try:
     if response.status_code == 200:
         result = response.json()
         projects = result.get('projects', [])
-        print(f"\n✅ Found {len(projects)} projects:")
+        print(f"\n[SUCCESS] Found {len(projects)} projects:")
         for project in projects[:5]:  # Show first 5
             print(f"  - {project['name']} (Status: {project['status']})")
     else:
-        print(f"❌ Failed to list projects: {response.text}")
+        print(f"[FAILED] Failed to list projects: {response.text}")
         
 except Exception as e:
-    print(f"❌ Error listing projects: {e}")
+    print(f"[ERROR] Error listing projects: {e}")

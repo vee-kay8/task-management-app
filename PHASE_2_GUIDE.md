@@ -1,6 +1,6 @@
 # Phase 2: Backend API Development - Complete Guide
 
-## 🎯 What We're Building
+##  What We're Building
 
 A **REST API** (Application Programming Interface) that:
 - Accepts requests from the frontend
@@ -8,7 +8,7 @@ A **REST API** (Application Programming Interface) that:
 - Talks to the database
 - Returns responses (usually in JSON format)
 
-## 🧒 Simple Analogy
+##  Simple Analogy
 
 Think of the backend as a **smart robot waiter** in a restaurant:
 
@@ -18,7 +18,7 @@ Think of the backend as a **smart robot waiter** in a restaurant:
 4. **Storage Room (Database)**: "Here are your tasks!"
 5. **Robot Waiter**: "Here you go!" (Returns JSON data)
 
-## 📚 What is REST API?
+##  What is REST API?
 
 **REST** = **RE**presentational **S**tate **T**ransfer
 
@@ -31,7 +31,7 @@ It's a way for computers to talk using HTTP (same as websites):
 | Update | PUT | `PUT /api/tasks/123` | "Update task #123" |
 | Delete | DELETE | `DELETE /api/tasks/123` | "Delete task #123" |
 
-## 🏗️ Backend Structure (Like a Building)
+## ️ Backend Structure (Like a Building)
 
 ```
 backend/
@@ -67,7 +67,7 @@ backend/
 └── run.py                        # Start the server (turn on the lights)
 ```
 
-## 🔧 Technologies We're Using
+##  Technologies We're Using
 
 ### 1. Flask
 **What it is**: A Python web framework (like a toolkit for building web apps)
@@ -116,7 +116,7 @@ User stores token → Uses token for future requests
 # Marshmallow says: "Email is invalid! Age must be a number!"
 ```
 
-## 📋 API Endpoints We'll Build
+##  API Endpoints We'll Build
 
 ### Authentication (`/api/auth/`)
 ```
@@ -186,7 +186,7 @@ DELETE /api/projects/:id
   - Output: success message
 ```
 
-## 🔐 How Authentication Works (Step-by-Step)
+##  How Authentication Works (Step-by-Step)
 
 ### Registration Flow:
 ```
@@ -233,7 +233,7 @@ DELETE /api/projects/:id
 5. If invalid: Return error "Unauthorized"
 ```
 
-## 🎨 Request/Response Examples
+##  Request/Response Examples
 
 ### Creating a Task (JSON Format)
 
@@ -289,7 +289,7 @@ Body: {
 }
 ```
 
-## 🛡️ Security Features
+##  Security Features
 
 ### 1. Password Hashing
 ```python
@@ -335,7 +335,7 @@ if priority not in ['LOW', 'MEDIUM', 'HIGH', 'URGENT']:
     return "Invalid priority!"
 ```
 
-## 📊 Error Handling
+##  Error Handling
 
 Good APIs always handle errors gracefully:
 
@@ -364,7 +364,7 @@ except Exception as e:
 - `404 Not Found` - Item doesn't exist
 - `500 Internal Server Error` - Server messed up
 
-## 🧪 Testing the API
+##  Testing the API
 
 We'll use **curl** or **Postman** to test:
 
@@ -384,16 +384,16 @@ curl -X GET http://localhost:5000/api/tasks \
   -H "Authorization: Bearer YOUR_TOKEN_HERE"
 ```
 
-## 🎯 What You'll Learn
+##  What You'll Learn
 
 By the end of Phase 2, you'll understand:
-- ✅ How to build REST APIs
-- ✅ How authentication works (JWT)
-- ✅ How to connect Python to databases (ORM)
-- ✅ How to validate and secure data
-- ✅ How HTTP requests/responses work
-- ✅ How to structure a professional backend
+-  How to build REST APIs
+-  How authentication works (JWT)
+-  How to connect Python to databases (ORM)
+-  How to validate and secure data
+-  How HTTP requests/responses work
+-  How to structure a professional backend
 
 ---
 
-**Ready to code?** Let's start building! 🚀
+**Ready to code?** Let's start building! 

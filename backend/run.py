@@ -51,12 +51,12 @@ if __name__ == '__main__':
     
     # Print startup message
     print("=" * 60)
-    print("🚀 Task Management API Server Starting...")
-    print(f"📍 Running on: http://localhost:{port}")
-    print(f"🔧 Debug mode: {debug}")
-    print(f"📊 Database: {os.getenv('DATABASE_URL', 'Not configured')}")
+    print("Task Management API Server Starting...")
+    print(f"Running on: http://localhost:{port}")
+    print(f"Debug mode: {debug}")
+    print(f"Database: {os.getenv('DATABASE_URL', 'Not configured')}")
     print("=" * 60)
-    print("\n💡 Press CTRL+C to stop the server\n")
+    print("\nPress CTRL+C to stop the server\n")
     
     # Start the server!
     app.run(
