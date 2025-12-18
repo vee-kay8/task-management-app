@@ -12,7 +12,7 @@ export default function DashboardPage() {
   // Fetch user's projects
   const { data: projectsData, isLoading: projectsLoading } = useQuery({
     queryKey: ['projects'],
-    queryFn: () => projectsApi.getAll({ page: 1 }),
+    queryFn: () => projectsApi.list({ page: 1 }),
   })
 
   const projects = projectsData?.projects || []

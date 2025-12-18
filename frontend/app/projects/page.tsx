@@ -1,23 +1,31 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { projectsApi } from '@/lib/api'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Plus, FolderKanban, Search, Filter } from 'lucide-react'
+import { Plus, FolderKanban, Search, Filter, Trash2 } from 'lucide-react'
 import CreateProjectModal from '@/components/CreateProjectModal'
 
 export default function ProjectsPage() {
+  const queryClient = useQueryClient()
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   // Fetch projects
   const { data: projectsData, isLoading, refetch } = useQuery({
     queryKey: ['projects', statusFilter],
-    queryFn: () => projectsApi.getAll({ 
-      status: statusFilter === 'all' ? undefined : statusFilter 
-    }),
+    queryFn: async () => {
+      // Fetch all projects by requesting a large per_page value
+      const result = await projectsApi.list({ 
+        status: statusFilter === 'all' ? undefined : statusFilter,
+        page: 1
+      })
+      console.log('Fetched projects:', result)
+      return result
+    },
   })
 
   const projects = projectsData?.projects || []
@@ -27,6 +35,28 @@ export default function ProjectsPage() {
     project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     project.description?.toLowerCase().includes(searchQuery.toLowerCase())
   )
+
+  // Handle project deletion
+  const handleDelete = async (e: React.MouseEvent, projectId: string, projectName: string) => {
+    e.preventDefault() // Prevent navigation to project detail
+    e.stopPropagation()
+    
+    const confirmMessage = `Are you sure you want to delete "${projectName}"? This action cannot be undone.`
+    if (!confirm(confirmMessage)) {
+      return
+    }
+
+    setDeletingId(projectId)
+    try {
+      await projectsApi.delete(projectId)
+      // Invalidate cache to refresh the list
+      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+    } catch (error: any) {
+      alert(error.message || 'Failed to delete project')
+    } finally {
+      setDeletingId(null)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -110,26 +140,43 @@ export default function ProjectsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project: any) => (
-            <Link
-              key={project.id}
-              href={`/projects/${project.id}`}
-              className="card hover:shadow-lg transition-shadow cursor-pointer group"
-            >
-              {/* Project Color Bar */}
-              <div 
-                className="h-2 -mx-6 -mt-6 mb-4 rounded-t-lg"
-                style={{ backgroundColor: project.color }}
-              />
+            <div key={project.id} className="relative">
+              <Link
+                href={`/projects/${project.id}`}
+                className="card hover:shadow-lg transition-shadow cursor-pointer group block"
+              >
+                {/* Project Color Bar */}
+                <div 
+                  className="h-2 -mx-6 -mt-6 mb-4 rounded-t-lg"
+                  style={{ backgroundColor: project.color }}
+                />
 
-              {/* Project Info */}
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
-                    {project.name}
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-600 line-clamp-2">
-                    {project.description || 'No description'}
-                  </p>
+                {/* Project Info */}
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
+                        {project.name}
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-600 line-clamp-2">
+                        {project.description || 'No description'}
+                      </p>
+                    </div>
+                    
+                    {/* Delete Button */}
+                    <button
+                      onClick={(e) => handleDelete(e, project.id, project.name)}
+                      disabled={deletingId === project.id}
+                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                      title="Delete project"
+                    >
+                      {deletingId === project.id ? (
+                        <div className="w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <Trash2 className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 {/* Status Badge */}
@@ -172,8 +219,8 @@ export default function ProjectsPage() {
                     {new Date(project.created_at).toLocaleDateString()}
                   </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           ))}
         </div>
       )}
@@ -182,9 +229,12 @@ export default function ProjectsPage() {
       <CreateProjectModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        onSuccess={() => {
+        onSuccess={async () => {
+          console.log('Project created, invalidating cache...')
           setIsCreateModalOpen(false)
-          refetch()
+          // Invalidate all project queries to force refetch
+          await queryClient.invalidateQueries({ queryKey: ['projects'] })
+          console.log('Cache invalidated, refetching...')
         }}
       />
     </div>

@@ -28,7 +28,7 @@ export default function DashboardLayout({
   }
 
   // Don't show anything until we verify authentication
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -76,14 +76,14 @@ export default function DashboardLayout({
               <div className="hidden sm:flex items-center space-x-3">
                 <div className="text-right">
                   <p className="text-sm font-medium text-gray-900">
-                    {user?.full_name}
+                    {user.full_name}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {user?.role}
+                    {user.role}
                   </p>
                 </div>
                 <div className="w-10 h-10 rounded-full bg-primary-600 flex items-center justify-center text-white font-medium">
-                  {user?.full_name.charAt(0)}
+                  {user.full_name.charAt(0).toUpperCase()}
                 </div>
               </div>
 

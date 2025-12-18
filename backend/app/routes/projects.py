@@ -167,14 +167,14 @@ def list_projects():
         for project in pagination.items:
             project_dict = project.to_dict()
             
-        # Add user's role in this project
-        member = get_user_project_role(project.id, user_id)
-        project_dict['user_role'] = member.role.value if member else None
-        
-        # Add member count
-        project_dict['member_count'] = project.members.count()
-        
-        projects_data.append(project_dict)
+            # Add user's role in this project
+            member = get_user_project_role(project.id, user_id)
+            project_dict['user_role'] = member.role.value if member else None
+            
+            # Add member count
+            project_dict['member_count'] = project.members.count()
+            
+            projects_data.append(project_dict)
         
         return jsonify({
             'projects': projects_data,
@@ -235,6 +235,7 @@ def create_project():
         start_date_str = data.get('start_date')
         end_date_str = data.get('end_date')
         status_str = data.get('status', 'ACTIVE').upper()
+        color = data.get('color', '#3B82F6')  # Default blue color
         
         # Parse dates
         start_date = None
@@ -269,6 +270,7 @@ def create_project():
             name=name,
             description=description if description else None,
             status=status,
+            color=color,
             start_date=start_date,
             end_date=end_date,
             owner_id=user_id

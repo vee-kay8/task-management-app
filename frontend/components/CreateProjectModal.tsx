@@ -35,7 +35,9 @@ export default function CreateProjectModal({ isOpen, onClose, onSuccess }: Creat
     setIsLoading(true)
 
     try {
-      await projectsApi.create(formData)
+      console.log('Creating project with data:', formData)
+      const response = await projectsApi.create(formData)
+      console.log('Project created successfully:', response)
       onSuccess()
       // Reset form
       setFormData({
@@ -47,7 +49,9 @@ export default function CreateProjectModal({ isOpen, onClose, onSuccess }: Creat
         end_date: '',
       })
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to create project')
+      console.error('Error creating project:', err)
+      const errorMessage = err.message || err.response?.data?.error || 'Failed to create project'
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
