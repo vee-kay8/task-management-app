@@ -228,6 +228,25 @@ def create_app(config_name=None):
         pass  # We'll use Flask-Migrate for this instead
     
     # ========================================
+    # HEALTH CHECK ENDPOINT
+    # ========================================
+    # This endpoint is used by Docker healthcheck to verify
+    # the container is running properly
+    @app.route('/api/health', methods=['GET'])
+    def health_check():
+        """
+        Health check endpoint for Docker container monitoring
+        
+        Returns:
+            JSON response indicating the service is healthy
+        """
+        return jsonify({
+            'status': 'healthy',
+            'service': 'task-management-backend',
+            'message': 'Service is running'
+        }), 200
+    
+    # ========================================
     # RETURN CONFIGURED APP
     # ========================================
     return app

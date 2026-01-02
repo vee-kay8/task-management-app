@@ -144,12 +144,12 @@ Faker==22.0.0
 # flake8==7.0.0
 
 # ============================================================
-# PRODUCTION SERVER (Optional - for deployment)
+# PRODUCTION SERVER (Required for Docker deployment)
 # ============================================================
 # gunicorn: Production WSGI server
 # Much better than Flask's built-in server for production
-# Uncomment when deploying to production
-# gunicorn==21.2.0
+# Required for running in Docker containers
+gunicorn==21.2.0
 
 # ============================================================
 # INSTALLATION INSTRUCTIONS

@@ -1,0 +1,270 @@
+# ============================================================
+# DOCKERIGNORE FILE FOR BACKEND
+# ============================================================
+# This file tells Docker which files and directories to IGNORE
+# when building the image. This is similar to .gitignore but for Docker.
+#
+# WHY DO WE NEED THIS?
+# 1. Reduces build context size (faster builds)
+# 2. Prevents sensitive files from being copied into the image
+# 3. Excludes unnecessary files (tests, docs, cache files)
+# 4. Improves security by not including credentials or secrets
+#
+# HOW IT WORKS:
+# When you run 'docker build', Docker sends all files in the
+# directory to the Docker daemon. Files matching patterns below
+# are excluded from this transfer.
+# ============================================================
+
+# ============================================================
+# PYTHON CACHE AND COMPILED FILES
+# ============================================================
+# Python creates these files during execution
+# They're specific to your local environment and not needed in containers
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions (compiled Python extensions)
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ============================================================
+# VIRTUAL ENVIRONMENTS
+# ============================================================
+# We create a new virtual environment inside the container
+# We don't need the local development virtual environment
+
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# ============================================================
+# ENVIRONMENT AND SECRETS
+# ============================================================
+# CRITICAL: Never include these files in Docker images
+# They contain passwords, API keys, and other sensitive data
+
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+*.env
+
+# Backup files that might contain sensitive data
+*.env.backup
+*.env.bak
+
+# ============================================================
+# DEVELOPMENT AND IDE FILES
+# ============================================================
+# These are specific to your local development setup
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ============================================================
+# TESTING AND COVERAGE
+# ============================================================
+# Test files and coverage reports aren't needed in production
+
+# pytest
+.pytest_cache/
+.cache/
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+
+# Unit test / coverage reports
+nosetests.xml
+test-results/
+
+# ============================================================
+# DOCUMENTATION
+# ============================================================
+# Documentation files aren't needed to run the application
+
+docs/
+*.md
+*.txt
+!requirements.txt
+
+# EXPLANATION OF !requirements.txt:
+# The ! means "exception" - include this file even though *.txt is ignored
+# requirements.txt is essential as it lists our Python dependencies
+
+# ============================================================
+# GIT AND VERSION CONTROL
+# ============================================================
+# Git metadata isn't needed in the container
+
+.git/
+.gitignore
+.gitattributes
+
+# ============================================================
+# DATABASE FILES
+# ============================================================
+# Local SQLite databases or database dumps shouldn't be in the image
+
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+
+# Database migration backups
+migrations/versions/*.pyc
+
+# ============================================================
+# LOGS AND TEMPORARY FILES
+# ============================================================
+# Log files are generated at runtime, not needed from build
+
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# ============================================================
+# DOCKER FILES
+# ============================================================
+# We don't need Docker-related files inside the image
+
+Dockerfile
+Dockerfile.*
+docker-compose*.yml
+.dockerignore
+
+# ============================================================
+# CI/CD AND DEPLOYMENT
+# ============================================================
+# Continuous integration and deployment configs
+
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+Jenkinsfile
+
+# ============================================================
+# SECURITY SCANNING
+# ============================================================
+# Security scan results and reports
+
+.bandit
+.safety
+trivy-report.json
+
+# ============================================================
+# JUPYTER NOTEBOOKS
+# ============================================================
+# Jupyter notebook files and checkpoints
+
+*.ipynb
+.ipynb_checkpoints/
+
+# ============================================================
+# CUSTOM EXCLUSIONS
+# ============================================================
+# Add project-specific files to ignore
+
+# Test scripts (not needed in production)
+test_*.py
+*_test.py
+
+# Example files
+examples/
+sample_data/
+
+# Scripts for local development only
+scripts/local/
+setup_dev.sh
+
+# ============================================================
+# WHAT GETS INCLUDED?
+# ============================================================
+# After all these exclusions, the Docker build will include:
+# - app/ directory (Flask application code)
+# - migrations/ directory (database migration files)
+# - run.py (application entry point)
+# - requirements.txt (Python dependencies)
+# - Any configuration files not excluded above
+#
+# This typically results in a build context of 1-5 MB instead of
+# potentially hundreds of MB with all the excluded files.
+# ============================================================
+
+# ============================================================
+# VERIFICATION
+# ============================================================
+# To see what files Docker will use in the build context:
+# 
+# Method 1: Check build context size
+# docker build -t test . 2>&1 | grep "Sending build context"
+#
+# Method 2: List files that will be sent
+# tar -czv --exclude-from=.dockerignore -C . . | tar -tzv
+#
+# ============================================================
