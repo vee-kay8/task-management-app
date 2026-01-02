@@ -30,9 +30,30 @@
 
 FROM node:18-alpine AS deps
 
-# LABEL: Add metadata to the image
+# ============================================================
+# IMAGE METADATA (OCI Labels)
+# ============================================================
+# Following Open Container Initiative (OCI) annotation standards
+# https://github.com/opencontainers/image-spec/blob/main/annotations.md
+
+LABEL org.opencontainers.image.title="Task Management Frontend"
+LABEL org.opencontainers.image.description="Next.js Frontend Application for Task Management"
+LABEL org.opencontainers.image.version="1.0.0"
+LABEL org.opencontainers.image.authors="vee-kay8"
+LABEL org.opencontainers.image.vendor="Task Management Project"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.source="https://github.com/vee-kay8/task-management-app"
+LABEL org.opencontainers.image.documentation="https://github.com/vee-kay8/task-management-app/blob/main/README.md"
+
+# Custom labels for internal metadata
+LABEL app.name="task-management-frontend"
+LABEL app.component="ui"
+LABEL app.tier="frontend"
+LABEL app.runtime="node"
+LABEL app.runtime.version="18"
+LABEL app.framework="nextjs"
+LABEL app.framework.version="14.2.35"
 LABEL maintainer="vee-kay8"
-LABEL description="Task Management Frontend - Dependencies Stage"
 LABEL stage="deps"
 
 # WHY node:18-alpine?

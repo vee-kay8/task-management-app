@@ -21,10 +21,29 @@
 
 FROM python:3.9-slim as builder
 
-# LABEL: Adds metadata to the image (good practice)
-# This helps identify the image and its purpose
+# ============================================================
+# IMAGE METADATA (OCI Labels)
+# ============================================================
+# Following Open Container Initiative (OCI) annotation standards
+# https://github.com/opencontainers/image-spec/blob/main/annotations.md
+
+LABEL org.opencontainers.image.title="Task Management Backend"
+LABEL org.opencontainers.image.description="Flask REST API for Task Management Application"
+LABEL org.opencontainers.image.version="1.0.0"
+LABEL org.opencontainers.image.authors="vee-kay8"
+LABEL org.opencontainers.image.vendor="Task Management Project"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.source="https://github.com/vee-kay8/task-management-app"
+LABEL org.opencontainers.image.documentation="https://github.com/vee-kay8/task-management-app/blob/main/README.md"
+
+# Custom labels for internal metadata
+LABEL app.name="task-management-backend"
+LABEL app.component="api"
+LABEL app.tier="backend"
+LABEL app.runtime="python"
+LABEL app.runtime.version="3.9"
+LABEL app.framework="flask"
 LABEL maintainer="vee-kay8"
-LABEL description="Task Management Backend - Builder Stage"
 LABEL stage="builder"
 
 # WORKDIR: Sets the working directory inside the container
