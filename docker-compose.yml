@@ -3,6 +3,11 @@
 # ============================================================
 # Purpose: Orchestrates all services for the task management application
 # 
+# ENVIRONMENT VARIABLES:
+# This configuration uses .env file for environment variables
+# Copy .env.example to .env and update values before running
+# Command: cp .env.example .env
+#
 # SERVICES:
 # 1. Database (PostgreSQL 15) - Data persistence
 # 2. Backend (Flask API) - Application logic
@@ -38,19 +43,19 @@ services:
     # Restart policy - always restart if container stops
     restart: always
     
-    # Environment variables for PostgreSQL initialization
+    # Environment variables from .env file
     environment:
       # Database name to create on first run
-      POSTGRES_DB: taskmanagement_db
+      POSTGRES_DB: ${POSTGRES_DB}
       
       # PostgreSQL superuser name
-      POSTGRES_USER: taskapp_user
+      POSTGRES_USER: ${POSTGRES_USER}
       
-      # PostgreSQL superuser password (CHANGE IN PRODUCTION!)
-      POSTGRES_PASSWORD: devpassword123
+      # PostgreSQL superuser password
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       
       # Set timezone to UTC for consistency
-      TZ: UTC
+      TZ: ${TZ:-UTC}
     
     # Port mapping: host:container
     # Access PostgreSQL on localhost:5432
@@ -97,30 +102,30 @@ services:
     # Restart policy
     restart: unless-stopped
     
-    # Environment variables for backend
+    # Environment variables from .env file
     environment:
       # Database connection
       # Use service name 'db' instead of 'localhost'
-      DATABASE_URL: postgresql://taskapp_user:devpassword123@db:5432/taskmanagement_db
+      DATABASE_URL: ${DATABASE_URL}
       
       # Flask configuration
-      FLASK_APP: run.py
-      FLASK_ENV: development
-      DEBUG: "True"
+      FLASK_APP: ${FLASK_APP:-run.py}
+      FLASK_ENV: ${FLASK_ENV:-development}
+      DEBUG: ${FLASK_DEBUG:-True}
       
-      # Security keys (CHANGE IN PRODUCTION!)
-      SECRET_KEY: dev-secret-key-change-in-production
-      JWT_SECRET_KEY: dev-jwt-secret-key-change-in-production
+      # Security keys from .env file
+      SECRET_KEY: ${SECRET_KEY}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       
       # JWT token expiration
-      JWT_ACCESS_TOKEN_EXPIRES: 3600
-      JWT_REFRESH_TOKEN_EXPIRES: 2592000
+      JWT_ACCESS_TOKEN_EXPIRES: ${JWT_ACCESS_TOKEN_EXPIRES:-3600}
+      JWT_REFRESH_TOKEN_EXPIRES: ${JWT_REFRESH_TOKEN_EXPIRES:-2592000}
       
       # CORS origins (allows frontend to make requests)
-      CORS_ORIGINS: http://localhost:3000,http://frontend:3000
+      CORS_ORIGINS: ${CORS_ORIGINS}
       
       # Timezone
-      TZ: UTC
+      TZ: ${TZ:-UTC}
     
     # Port mapping: host:container
     # Access API at http://localhost:5000
@@ -194,9 +199,9 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      # Pass build-time arguments
+      # Pass build-time arguments from .env file
       args:
-        NEXT_PUBLIC_API_URL: http://localhost:5000/api
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     
     # Image name (can be pushed to Docker Hub)
     image: task-management-frontend:latest
@@ -207,21 +212,21 @@ services:
     # Restart policy
     restart: unless-stopped
     
-    # Environment variables for frontend
+    # Environment variables from .env file
     environment:
       # API endpoint - uses backend service name for container-to-container communication
       # For browser requests, use localhost since browser runs on host
-      NEXT_PUBLIC_API_URL: http://localhost:5000/api
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
       
       # Node environment
-      NODE_ENV: production
+      NODE_ENV: ${NODE_ENV:-production}
       
       # Next.js configuration
-      PORT: 3000
-      HOSTNAME: "0.0.0.0"
+      PORT: ${PORT:-3000}
+      HOSTNAME: ${HOSTNAME:-0.0.0.0}
       
       # Disable telemetry
-      NEXT_TELEMETRY_DISABLED: 1
+      NEXT_TELEMETRY_DISABLED: ${NEXT_TELEMETRY_DISABLED:-1}
     
     # Port mapping: host:container
     # Access frontend at http://localhost:3000

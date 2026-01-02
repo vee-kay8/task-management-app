@@ -1,0 +1,99 @@
+# Production Docker Compose Override
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+version: '3.8'
+
+services:
+  db:
+    # Production database settings
+    restart: always
+    
+    # Resource limits for production
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
+    
+    # Enhanced health check for production
+    healthcheck:
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  backend:
+    # Production backend settings
+    restart: always
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    
+    # Enhanced health check
+    healthcheck:
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 60s
+    
+    # Production logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  frontend:
+    # Production frontend settings
+    restart: always
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    
+    # Enhanced health check
+    healthcheck:
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 45s
+    
+    # Production logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# Production volumes with specific drivers
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /var/lib/docker/volumes/taskmanagement_postgres
+
+# Production network configuration
+networks:
+  taskapp_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
