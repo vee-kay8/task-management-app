@@ -1,6 +1,25 @@
-# Docker Compose Configuration
-# Purpose: Sets up local development environment with PostgreSQL database
-# Usage: docker-compose up -d (start), docker-compose down (stop)
+# ============================================================
+# DOCKER COMPOSE CONFIGURATION - COMPLETE STACK
+# ============================================================
+# Purpose: Orchestrates all services for the task management application
+# 
+# SERVICES:
+# 1. Database (PostgreSQL 15) - Data persistence
+# 2. Backend (Flask API) - Application logic
+# 3. Frontend (Next.js) - User interface
+#
+# USAGE:
+# Start all services:     docker-compose up -d
+# Stop all services:      docker-compose down
+# View logs:              docker-compose logs -f
+# View specific logs:     docker-compose logs -f backend
+# Rebuild services:       docker-compose up -d --build
+# Remove everything:      docker-compose down -v
+#
+# ARCHITECTURE:
+# Frontend (port 3000) → Backend (port 5000) → Database (port 5432)
+# All services communicate via 'taskapp_network'
+# ============================================================
 
 version: '3.8'
 
@@ -60,19 +79,192 @@ services:
       - taskapp_network
 
   # ===================================
+  # BACKEND SERVICE (Flask API)
+  # ===================================
+  # Flask application serving REST API
+  backend:
+    # Build from local Dockerfile
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    
+    # Image name (can be pushed to Docker Hub)
+    image: task-management-backend:latest
+    
+    # Container name for easy reference
+    container_name: taskmanagement_backend
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Environment variables for backend
+    environment:
+      # Database connection
+      # Use service name 'db' instead of 'localhost'
+      DATABASE_URL: postgresql://taskapp_user:devpassword123@db:5432/taskmanagement_db
+      
+      # Flask configuration
+      FLASK_APP: run.py
+      FLASK_ENV: development
+      DEBUG: "True"
+      
+      # Security keys (CHANGE IN PRODUCTION!)
+      SECRET_KEY: dev-secret-key-change-in-production
+      JWT_SECRET_KEY: dev-jwt-secret-key-change-in-production
+      
+      # JWT token expiration
+      JWT_ACCESS_TOKEN_EXPIRES: 3600
+      JWT_REFRESH_TOKEN_EXPIRES: 2592000
+      
+      # CORS origins (allows frontend to make requests)
+      CORS_ORIGINS: http://localhost:3000,http://frontend:3000
+      
+      # Timezone
+      TZ: UTC
+    
+    # Port mapping: host:container
+    # Access API at http://localhost:5000
+    ports:
+      - "5000:5000"
+    
+    # Service dependencies
+    # Backend waits for database to be healthy before starting
+    depends_on:
+      db:
+        condition: service_healthy
+    
+# ===================================
+# USAGE INSTRUCTIONS
+# ===================================
+#
+# START ALL SERVICES:
+# docker-compose up -d
+# This starts all services in detached mode (background)
+#
+# VIEW LOGS:
+# docker-compose logs -f              # All services
+# docker-compose logs -f backend      # Backend only
+# docker-compose logs -f frontend     # Frontend only
+# docker-compose logs -f db           # Database only
+#
+# STOP ALL SERVICES:
+# docker-compose down                 # Stop and remove containers
+# docker-compose down -v              # Also remove volumes (deletes database data)
+#
+# REBUILD SERVICES:
+# docker-compose up -d --build        # Rebuild images and restart
+# docker-compose build backend        # Rebuild backend only
+# docker-compose build frontend       # Rebuild frontend only
+#
+# RESTART SERVICES:
+# docker-compose restart              # Restart all
+# docker-compose restart backend      # Restart backend only
+#
+# CHECK STATUS:
+# docker-compose ps                   # View running containers
+# docker-compose top                  # View running processes
+#
+# ACCESS SERVICES:
+# Frontend:  http://localhost:3000
+# Backend:   http://localhost:5000
+# Database:  localhost:5432
+#
+# DATABASE CONNECTION:
+#   Host: localhost
+#   Port: 5432
+#   Database: taskmanagement_db
+#   Username: taskapp_user
+#   Password: devpassword123
+#
+# TROUBLESHOOTING:
+# docker-compose logs -f backend      # Check backend logs
+# docker-compose exec backend sh      # Shell into backend container
+# docker-compose exec db psql -U taskapp_user -d taskmanagement_db  # Connect to database
+#
+# CLEANUP:
+# docker-compose down -v --remove-orphans  # Remove everything including orphaned containers/app:ro
+    #   - ./backend/migrations:/app/migrations:ro
+
+  # ===================================
+  # FRONTEND SERVICE (Next.js)
+  # ===================================
+  # Next.js application serving the user interface
+  frontend:
+    # Build from local Dockerfile
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      # Pass build-time arguments
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:5000/api
+    
+    # Image name (can be pushed to Docker Hub)
+    image: task-management-frontend:latest
+    
+    # Container name for easy reference
+    container_name: taskmanagement_frontend
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Environment variables for frontend
+    environment:
+      # API endpoint - uses backend service name for container-to-container communication
+      # For browser requests, use localhost since browser runs on host
+      NEXT_PUBLIC_API_URL: http://localhost:5000/api
+      
+      # Node environment
+      NODE_ENV: production
+      
+      # Next.js configuration
+      PORT: 3000
+      HOSTNAME: "0.0.0.0"
+      
+      # Disable telemetry
+      NEXT_TELEMETRY_DISABLED: 1
+    
+    # Port mapping: host:container
+    # Access frontend at http://localhost:3000
+    ports:
+      - "3000:3000"
+    
+    # Service dependencies
+    # Frontend waits for backend to be healthy before starting
+    depends_on:
+      backend:
+        condition: service_healthy
+    
+    # Health check
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    
+    # Network
+    networks:
+      - taskapp_network
+
+  # ===================================
   # REDIS SERVICE (Optional - for caching)
   # ===================================
   # Uncomment if you want to add Redis for caching/sessions
   # redis:
   #   image: redis:7-alpine
   #   container_name: taskmanagement_redis
-  #   restart: always
+  #   restart: unless-stopped
   #   ports:
   #     - "6379:6379"
   #   volumes:
   #     - redis_data:/data
   #   networks:
   #     - taskapp_network
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
   # ===================================
   # PGADMIN (Optional - Database GUI)
@@ -82,7 +274,7 @@ services:
   # pgadmin:
   #   image: dpage/pgadmin4:latest
   #   container_name: taskmanagement_pgadmin
-  #   restart: always
+  #   restart: unless-stopped
   #   environment:
   #     PGADMIN_DEFAULT_EMAIL: admin@taskapp.com
   #     PGADMIN_DEFAULT_PASSWORD: admin
@@ -91,7 +283,8 @@ services:
   #   networks:
   #     - taskapp_network
   #   depends_on:
-  #     - db
+  #     db:
+  #       condition: service_healthy
 
 # ===================================
 # VOLUMES
