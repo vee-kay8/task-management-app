@@ -21,7 +21,7 @@ export default function TaskDetailModal({ task: initialTask, onClose, onUpdate }
   // Fetch full task details with comments
   const { data: task, isLoading } = useQuery({
     queryKey: ['task', initialTask.id],
-    queryFn: () => tasksApi.getById(initialTask.id),
+    queryFn: () => tasksApi.get(initialTask.id),
     initialData: initialTask,
   })
 

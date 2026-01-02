@@ -47,12 +47,11 @@ export default function RegisterPage() {
 
     try {
       // Register user
-      await authApi.register({
-        full_name: formData.full_name,
-        email: formData.email,
-        password: formData.password,
-        role: 'MEMBER', // Default role
-      })
+      await authApi.register(
+        formData.full_name,
+        formData.email,
+        formData.password
+      )
 
       // Auto-login after registration
       const loginResponse = await authApi.login(formData.email, formData.password)

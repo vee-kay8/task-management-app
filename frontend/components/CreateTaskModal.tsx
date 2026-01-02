@@ -29,7 +29,7 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, onSuccess 
   // Fetch team members for assignment
   const { data: usersData } = useQuery({
     queryKey: ['users'],
-    queryFn: () => usersApi.getAll(),
+    queryFn: () => usersApi.list(),
     enabled: isOpen,
   })
 

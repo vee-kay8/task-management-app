@@ -236,7 +236,7 @@ RUN addgroup --system --gid 1001 nodejs && \
 # Public directory contains static files (images, fonts, etc.)
 # These are served directly without processing
 
-COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # ============================================================
 # COPY STANDALONE OUTPUT
