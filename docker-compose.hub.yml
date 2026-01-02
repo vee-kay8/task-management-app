@@ -1,0 +1,126 @@
+# ============================================================
+# DOCKER COMPOSE - DOCKER HUB DEPLOYMENT
+# ============================================================
+# Purpose: Deploy using pre-built images from Docker Hub
+# 
+# Usage: docker-compose -f docker-compose.hub.yml up -d
+#
+# This file pulls images from Docker Hub instead of building locally
+# Perfect for: Production deployment, fresh installations, CI/CD
+# ============================================================
+
+version: '3.8'
+
+services:
+  # ===================================
+  # POSTGRESQL DATABASE SERVICE
+  # ===================================
+  db:
+    image: postgres:15-alpine
+    container_name: taskmanagement_postgres
+    restart: always
+    
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: ${TZ:-UTC}
+    
+    ports:
+      - "5432:5432"
+    
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+    networks:
+      - taskapp_network
+
+  # ===================================
+  # BACKEND SERVICE (From Docker Hub)
+  # ===================================
+  backend:
+    # Pull from Docker Hub (no local build)
+    image: veekay8/task-management-backend:1.0.0
+    
+    container_name: taskmanagement_backend
+    restart: unless-stopped
+    
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      FLASK_APP: ${FLASK_APP:-run.py}
+      FLASK_ENV: ${FLASK_ENV:-development}
+      DEBUG: ${FLASK_DEBUG:-True}
+      SECRET_KEY: ${SECRET_KEY}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_ACCESS_TOKEN_EXPIRES: ${JWT_ACCESS_TOKEN_EXPIRES:-3600}
+      JWT_REFRESH_TOKEN_EXPIRES: ${JWT_REFRESH_TOKEN_EXPIRES:-2592000}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      TZ: ${TZ:-UTC}
+    
+    ports:
+      - "5000:5000"
+    
+    depends_on:
+      db:
+        condition: service_healthy
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    networks:
+      - taskapp_network
+
+  # ===================================
+  # FRONTEND SERVICE (From Docker Hub)
+  # ===================================
+  frontend:
+    # Pull from Docker Hub (no local build)
+    image: veekay8/task-management-frontend:1.0.0
+    
+    container_name: taskmanagement_frontend
+    restart: unless-stopped
+    
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${PORT:-3000}
+      HOSTNAME: ${HOSTNAME:-0.0.0.0}
+      NEXT_TELEMETRY_DISABLED: ${NEXT_TELEMETRY_DISABLED:-1}
+    
+    ports:
+      - "3000:3000"
+    
+    depends_on:
+      backend:
+        condition: service_healthy
+    
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    
+    networks:
+      - taskapp_network
+
+# Volumes
+volumes:
+  postgres_data:
+    driver: local
+
+# Networks
+networks:
+  taskapp_network:
+    driver: bridge

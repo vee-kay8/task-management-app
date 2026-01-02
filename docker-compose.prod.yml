@@ -1,5 +1,8 @@
 # Production Docker Compose Override
 # Usage: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# This file uses Docker Hub images for production deployment
+# Images are pulled from: https://hub.docker.com/u/veekay8
 
 version: '3.8'
 
@@ -26,6 +29,9 @@ services:
       start_period: 30s
 
   backend:
+    # Use Docker Hub image for production (no local build)
+    image: veekay8/task-management-backend:1.0.0
+    
     # Production backend settings
     restart: always
     
@@ -54,6 +60,9 @@ services:
         max-file: "3"
 
   frontend:
+    # Use Docker Hub image for production (no local build)
+    image: veekay8/task-management-frontend:1.0.0
+    
     # Production frontend settings
     restart: always
     
@@ -81,14 +90,10 @@ services:
         max-size: "10m"
         max-file: "3"
 
-# Production volumes with specific drivers
+# Production volumes configuration
 volumes:
   postgres_data:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /var/lib/docker/volumes/taskmanagement_postgres
 
 # Production network configuration
 networks:
