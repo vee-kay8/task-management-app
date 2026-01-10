@@ -1,5 +1,38 @@
 # Deployment Guide - Task Management Application
 
+## 🚀 Automated Deployment (Recommended)
+
+**Deploy in ONE command** - no manual configuration needed!
+
+### Windows
+```powershell
+.\deploy.ps1
+```
+or
+```cmd
+deploy.bat
+```
+
+### Linux/Mac
+```bash
+./deploy.sh
+```
+
+**What it does automatically:**
+- ✅ Generates secure random keys using Docker (no Python installation needed)
+- ✅ Creates and configures .env file
+- ✅ Pulls Docker images from Docker Hub
+- ✅ Fixes Windows HOSTNAME issues
+- ✅ Deploys all services with production settings
+
+**See [QUICK_DEPLOY.md](QUICK_DEPLOY.md) for automated deployment details.**
+
+---
+
+## Manual Deployment (Advanced)
+
+For advanced users who need custom configuration, continue with the manual steps below.
+
 ## Overview
 This guide covers deploying the containerized Task Management Application using Docker images from Docker Hub.
 

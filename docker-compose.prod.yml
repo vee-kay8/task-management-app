@@ -66,6 +66,10 @@ services:
     # Production frontend settings
     restart: always
     
+    # Override HOSTNAME explicitly for Windows compatibility
+    environment:
+      - HOSTNAME=0.0.0.0
+    
     # Resource limits
     deploy:
       resources:
