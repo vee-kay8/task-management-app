@@ -11,11 +11,23 @@ interface CreateProjectModalProps {
 }
 
 const PROJECT_COLORS = [
-  '#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6',
-  '#EC4899', '#06B6D4', '#84CC16', '#F97316', '#6366F1'
+  '#3B82F6',
+  '#EF4444',
+  '#10B981',
+  '#F59E0B',
+  '#8B5CF6',
+  '#EC4899',
+  '#06B6D4',
+  '#84CC16',
+  '#F97316',
+  '#6366F1',
 ]
 
-export default function CreateProjectModal({ isOpen, onClose, onSuccess }: CreateProjectModalProps) {
+export default function CreateProjectModal({
+  isOpen,
+  onClose,
+  onSuccess,
+}: CreateProjectModalProps) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -50,7 +62,8 @@ export default function CreateProjectModal({ isOpen, onClose, onSuccess }: Creat
       })
     } catch (err: any) {
       console.error('Error creating project:', err)
-      const errorMessage = err.message || err.response?.data?.error || 'Failed to create project'
+      const errorMessage =
+        err.message || err.response?.data?.error || 'Failed to create project'
       setError(errorMessage)
     } finally {
       setIsLoading(false)
@@ -62,7 +75,9 @@ export default function CreateProjectModal({ isOpen, onClose, onSuccess }: Creat
       <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-gray-900">Create New Project</h2>
+          <h2 className="text-xl font-bold text-gray-900">
+            Create New Project
+          </h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -88,7 +103,9 @@ export default function CreateProjectModal({ isOpen, onClose, onSuccess }: Creat
               type="text"
               required
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               className="input"
               placeholder="Website Redesign"
             />
@@ -101,7 +118,9 @@ export default function CreateProjectModal({ isOpen, onClose, onSuccess }: Creat
             </label>
             <textarea
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               className="input"
               rows={3}
               placeholder="Brief description of the project..."
@@ -115,7 +134,9 @@ export default function CreateProjectModal({ isOpen, onClose, onSuccess }: Creat
             </label>
             <select
               value={formData.status}
-              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, status: e.target.value })
+              }
               className="input"
             >
               <option value="PLANNING">Planning</option>
@@ -137,7 +158,9 @@ export default function CreateProjectModal({ isOpen, onClose, onSuccess }: Creat
                   type="button"
                   onClick={() => setFormData({ ...formData, color })}
                   className={`w-10 h-10 rounded-lg transition-transform ${
-                    formData.color === color ? 'ring-2 ring-offset-2 ring-primary-600 scale-110' : ''
+                    formData.color === color
+                      ? 'ring-2 ring-offset-2 ring-primary-600 scale-110'
+                      : ''
                   }`}
                   style={{ backgroundColor: color }}
                 />
@@ -154,7 +177,9 @@ export default function CreateProjectModal({ isOpen, onClose, onSuccess }: Creat
               <input
                 type="date"
                 value={formData.start_date}
-                onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, start_date: e.target.value })
+                }
                 className="input"
               />
             </div>
@@ -165,7 +190,9 @@ export default function CreateProjectModal({ isOpen, onClose, onSuccess }: Creat
               <input
                 type="date"
                 value={formData.end_date}
-                onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, end_date: e.target.value })
+                }
                 className="input"
               />
             </div>

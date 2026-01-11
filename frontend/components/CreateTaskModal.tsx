@@ -12,7 +12,12 @@ interface CreateTaskModalProps {
   onSuccess: () => void
 }
 
-export default function CreateTaskModal({ isOpen, onClose, projectId, onSuccess }: CreateTaskModalProps) {
+export default function CreateTaskModal({
+  isOpen,
+  onClose,
+  projectId,
+  onSuccess,
+}: CreateTaskModalProps) {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -51,13 +56,20 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, onSuccess 
         priority: formData.priority,
         assigned_to_id: formData.assigned_to_id || undefined,
         due_date: formData.due_date || undefined,
-        estimated_hours: formData.estimated_hours ? Number(formData.estimated_hours) : undefined,
-        tags: formData.tags ? formData.tags.split(',').map(t => t.trim()).filter(Boolean) : undefined,
+        estimated_hours: formData.estimated_hours
+          ? Number(formData.estimated_hours)
+          : undefined,
+        tags: formData.tags
+          ? formData.tags
+              .split(',')
+              .map((t) => t.trim())
+              .filter(Boolean)
+          : undefined,
       }
 
       await tasksApi.create(taskData)
       onSuccess()
-      
+
       // Reset form
       setFormData({
         title: '',
@@ -107,7 +119,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, onSuccess 
               type="text"
               required
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
               className="input"
               placeholder="Design homepage mockup"
             />
@@ -120,7 +134,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, onSuccess 
             </label>
             <textarea
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               className="input"
               rows={3}
               placeholder="Detailed description of the task..."
@@ -135,7 +151,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, onSuccess 
               </label>
               <select
                 value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, status: e.target.value })
+                }
                 className="input"
               >
                 <option value="TODO">To Do</option>
@@ -151,7 +169,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, onSuccess 
               </label>
               <select
                 value={formData.priority}
-                onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, priority: e.target.value })
+                }
                 className="input"
               >
                 <option value="LOW">Low</option>
@@ -169,7 +189,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, onSuccess 
             </label>
             <select
               value={formData.assigned_to_id}
-              onChange={(e) => setFormData({ ...formData, assigned_to_id: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, assigned_to_id: e.target.value })
+              }
               className="input"
             >
               <option value="">Unassigned</option>
@@ -190,7 +212,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, onSuccess 
               <input
                 type="date"
                 value={formData.due_date}
-                onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, due_date: e.target.value })
+                }
                 className="input"
               />
             </div>
@@ -204,7 +228,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, onSuccess 
                 min="0"
                 step="0.5"
                 value={formData.estimated_hours}
-                onChange={(e) => setFormData({ ...formData, estimated_hours: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, estimated_hours: e.target.value })
+                }
                 className="input"
                 placeholder="8"
               />
@@ -219,7 +245,9 @@ export default function CreateTaskModal({ isOpen, onClose, projectId, onSuccess 
             <input
               type="text"
               value={formData.tags}
-              onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, tags: e.target.value })
+              }
               className="input"
               placeholder="design, ui, frontend"
             />

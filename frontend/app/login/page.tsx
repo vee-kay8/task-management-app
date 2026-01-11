@@ -9,7 +9,7 @@ import { useAuthStore } from '@/lib/store'
 export default function LoginPage() {
   const router = useRouter()
   const setAuth = useAuthStore((state) => state.setAuth)
-  
+
   // Form state
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -24,15 +24,16 @@ export default function LoginPage() {
     try {
       // Call backend login API
       const response = await authApi.login(email, password)
-      
+
       // Save user data and tokens
       setAuth(response.user, response.access_token, response.refresh_token)
-      
+
       // Redirect to dashboard
       router.push('/dashboard')
     } catch (err: any) {
       // Show error message
-      const message = err.response?.data?.error || 'Login failed. Please try again.'
+      const message =
+        err.response?.data?.error || 'Login failed. Please try again.'
       setError(message)
     } finally {
       setIsLoading(false)
@@ -47,9 +48,7 @@ export default function LoginPage() {
           <h1 className="text-4xl font-bold text-primary-600 mb-2">
             Task Manager
           </h1>
-          <p className="text-gray-600">
-            Sign in to manage your projects
-          </p>
+          <p className="text-gray-600">Sign in to manage your projects</p>
         </div>
 
         {/* Login Card */}
@@ -67,7 +66,10 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Email Address
               </label>
               <input
@@ -84,7 +86,10 @@ export default function LoginPage() {
 
             {/* Password Input */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Password
               </label>
               <input
@@ -111,8 +116,11 @@ export default function LoginPage() {
 
           {/* Register Link */}
           <div className="mt-6 text-center text-sm text-gray-600">
-            Don't have an account?{' '}
-            <Link href="/register" className="text-primary-600 hover:text-primary-700 font-medium">
+            Don&apos;t have an account?{' '}
+            <Link
+              href="/register"
+              className="text-primary-600 hover:text-primary-700 font-medium"
+            >
               Register here
             </Link>
           </div>

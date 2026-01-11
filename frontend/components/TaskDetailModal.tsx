@@ -4,8 +4,22 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { tasksApi } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
-import { X, Calendar, Clock, User, Tag, MessageSquare, Send } from 'lucide-react'
-import { formatDate, formatRelativeTime, getPriorityColor, getStatusColor, getInitials } from '@/lib/utils'
+import {
+  X,
+  Calendar,
+  Clock,
+  User,
+  Tag,
+  MessageSquare,
+  Send,
+} from 'lucide-react'
+import {
+  formatDate,
+  formatRelativeTime,
+  getPriorityColor,
+  getStatusColor,
+  getInitials,
+} from '@/lib/utils'
 
 interface TaskDetailModalProps {
   task: any
@@ -13,13 +27,17 @@ interface TaskDetailModalProps {
   onUpdate: () => void
 }
 
-export default function TaskDetailModal({ task: initialTask, onClose, onUpdate }: TaskDetailModalProps) {
+export default function TaskDetailModal({
+  task: initialTask,
+  onClose,
+  onUpdate,
+}: TaskDetailModalProps) {
   const queryClient = useQueryClient()
   const currentUser = useAuthStore((state) => state.user)
   const [commentContent, setCommentContent] = useState('')
 
   // Fetch full task details with comments
-  const { data: task, isLoading } = useQuery({
+  const { data: task } = useQuery({
     queryKey: ['task', initialTask.id],
     queryFn: () => tasksApi.get(initialTask.id),
     initialData: initialTask,
@@ -72,7 +90,9 @@ export default function TaskDetailModal({ task: initialTask, onClose, onUpdate }
             <div className="lg:col-span-2 space-y-6">
               {/* Description */}
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-2">Description</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-2">
+                  Description
+                </h3>
                 <p className="text-gray-900 whitespace-pre-wrap">
                   {task.description || 'No description provided'}
                 </p>
@@ -102,7 +122,9 @@ export default function TaskDetailModal({ task: initialTask, onClose, onUpdate }
                       <div className="flex justify-end mt-2">
                         <button
                           type="submit"
-                          disabled={!commentContent.trim() || addComment.isPending}
+                          disabled={
+                            !commentContent.trim() || addComment.isPending
+                          }
                           className="btn btn-primary btn-sm inline-flex items-center"
                         >
                           <Send className="w-4 h-4 mr-1" />
@@ -161,8 +183,12 @@ export default function TaskDetailModal({ task: initialTask, onClose, onUpdate }
                       {getInitials(task.assignee.full_name)}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{task.assignee.full_name}</p>
-                      <p className="text-xs text-gray-500">{task.assignee.email}</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {task.assignee.full_name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {task.assignee.email}
+                      </p>
                     </div>
                   </div>
                 ) : (
@@ -172,14 +198,20 @@ export default function TaskDetailModal({ task: initialTask, onClose, onUpdate }
 
               {/* Reporter */}
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-2">Reporter</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-2">
+                  Reporter
+                </h3>
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-medium">
                     {getInitials(task.reporter.full_name)}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">{task.reporter.full_name}</p>
-                    <p className="text-xs text-gray-500">{task.reporter.email}</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      {task.reporter.full_name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {task.reporter.email}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -191,7 +223,9 @@ export default function TaskDetailModal({ task: initialTask, onClose, onUpdate }
                     <Calendar className="w-4 h-4 mr-2" />
                     Due Date
                   </h3>
-                  <p className="text-sm text-gray-900">{formatDate(task.due_date)}</p>
+                  <p className="text-sm text-gray-900">
+                    {formatDate(task.due_date)}
+                  </p>
                 </div>
               )}
 
@@ -204,10 +238,14 @@ export default function TaskDetailModal({ task: initialTask, onClose, onUpdate }
                   </h3>
                   <div className="space-y-1 text-sm">
                     {task.estimated_hours && (
-                      <p className="text-gray-900">Estimated: {task.estimated_hours}h</p>
+                      <p className="text-gray-900">
+                        Estimated: {task.estimated_hours}h
+                      </p>
                     )}
                     {task.actual_hours && (
-                      <p className="text-gray-900">Actual: {task.actual_hours}h</p>
+                      <p className="text-gray-900">
+                        Actual: {task.actual_hours}h
+                      </p>
                     )}
                   </div>
                 </div>

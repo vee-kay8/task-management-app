@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { projectsApi } from '@/lib/api'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Plus, FolderKanban, Search, Filter, Trash2 } from 'lucide-react'
+import { Plus, FolderKanban, Search, Trash2 } from 'lucide-react'
 import CreateProjectModal from '@/components/CreateProjectModal'
 
 export default function ProjectsPage() {
@@ -15,13 +15,16 @@ export default function ProjectsPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
   // Fetch projects
-  const { data: projectsData, isLoading, refetch } = useQuery({
+  const {
+    data: projectsData,
+    isLoading,
+  } = useQuery({
     queryKey: ['projects', statusFilter],
     queryFn: async () => {
       // Fetch all projects by requesting a large per_page value
-      const result = await projectsApi.list({ 
+      const result = await projectsApi.list({
         status: statusFilter === 'all' ? undefined : statusFilter,
-        page: 1
+        page: 1,
       })
       console.log('Fetched projects:', result)
       return result
@@ -31,16 +34,21 @@ export default function ProjectsPage() {
   const projects = projectsData?.projects || []
 
   // Filter projects by search
-  const filteredProjects = projects.filter((project: any) =>
-    project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    project.description?.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProjects = projects.filter(
+    (project: any) =>
+      project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.description?.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   // Handle project deletion
-  const handleDelete = async (e: React.MouseEvent, projectId: string, projectName: string) => {
+  const handleDelete = async (
+    e: React.MouseEvent,
+    projectId: string,
+    projectName: string
+  ) => {
     e.preventDefault() // Prevent navigation to project detail
     e.stopPropagation()
-    
+
     const confirmMessage = `Are you sure you want to delete "${projectName}"? This action cannot be undone.`
     if (!confirm(confirmMessage)) {
       return
@@ -123,8 +131,8 @@ export default function ProjectsPage() {
             {searchQuery ? 'No projects found' : 'No projects yet'}
           </h3>
           <p className="text-gray-600 mb-6">
-            {searchQuery 
-              ? 'Try adjusting your search or filters' 
+            {searchQuery
+              ? 'Try adjusting your search or filters'
               : 'Get started by creating your first project!'}
           </p>
           {!searchQuery && (
@@ -146,7 +154,7 @@ export default function ProjectsPage() {
                 className="card hover:shadow-lg transition-shadow cursor-pointer group block"
               >
                 {/* Project Color Bar */}
-                <div 
+                <div
                   className="h-2 -mx-6 -mt-6 mb-4 rounded-t-lg"
                   style={{ backgroundColor: project.color }}
                 />
@@ -162,7 +170,7 @@ export default function ProjectsPage() {
                         {project.description || 'No description'}
                       </p>
                     </div>
-                    
+
                     {/* Delete Button */}
                     <button
                       onClick={(e) => handleDelete(e, project.id, project.name)}
@@ -181,13 +189,19 @@ export default function ProjectsPage() {
 
                 {/* Status Badge */}
                 <div>
-                  <span className={`badge ${
-                    project.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
-                    project.status === 'PLANNING' ? 'bg-yellow-100 text-yellow-800' :
-                    project.status === 'COMPLETED' ? 'bg-blue-100 text-blue-800' :
-                    project.status === 'ON_HOLD' ? 'bg-orange-100 text-orange-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
+                  <span
+                    className={`badge ${
+                      project.status === 'ACTIVE'
+                        ? 'bg-green-100 text-green-800'
+                        : project.status === 'PLANNING'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : project.status === 'COMPLETED'
+                            ? 'bg-blue-100 text-blue-800'
+                            : project.status === 'ON_HOLD'
+                              ? 'bg-orange-100 text-orange-800'
+                              : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
                     {project.status}
                   </span>
                 </div>

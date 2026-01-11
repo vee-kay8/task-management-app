@@ -19,18 +19,16 @@ from app.models.task import Task, Comment, Attachment, TaskStatus, TaskPriority
 # Make all models available when importing from app.models
 __all__ = [
     # User models
-    'User',
-    'UserRole',
-    
+    "User",
+    "UserRole",
     # Project models
-    'Project',
-    'ProjectMember',
-    'ProjectStatus',
-    
+    "Project",
+    "ProjectMember",
+    "ProjectStatus",
     # Task models
-    'Task',
-    'TaskStatus',
-    'TaskPriority',
-    'Comment',
-    'Attachment',
+    "Task",
+    "TaskStatus",
+    "TaskPriority",
+    "Comment",
+    "Attachment",
 ]

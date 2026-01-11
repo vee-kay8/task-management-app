@@ -21,7 +21,7 @@ Werkzeug==3.0.1
 # SQLAlchemy: SQL toolkit and ORM (Object-Relational Mapper)
 # Lets us write Python code instead of SQL queries
 # Example: User.query.all() instead of "SELECT * FROM users"
-SQLAlchemy==2.0.23
+SQLAlchemy>=2.0.36
 
 # Flask-SQLAlchemy: Flask integration for SQLAlchemy
 # Makes SQLAlchemy work smoothly with Flask
@@ -29,7 +29,8 @@ Flask-SQLAlchemy==3.1.1
 
 # psycopg2-binary: PostgreSQL adapter for Python
 # Allows Python to talk to PostgreSQL database
-psycopg2-binary==2.9.9
+# Note: Using latest version for Python 3.14+ compatibility
+psycopg2-binary>=2.9.9
 
 # Flask-Migrate: Database migration tool (uses Alembic)
 # Helps manage database schema changes over time
@@ -135,13 +136,17 @@ Faker==22.0.0
 # ============================================================
 # black: Code formatter
 # Automatically formats your code to look consistent
-# Uncomment if you want auto-formatting
-# black==23.12.1
+# Enforces PEP 8 style guide with minimal configuration
+black==23.12.1
 
 # flake8: Code linter
 # Checks for code style issues and potential bugs
-# Uncomment if you want code checking
-# flake8==7.0.0
+# Finds unused imports, undefined names, syntax errors
+flake8==7.0.0
+
+# flake8-docstrings: Docstring style checker for flake8
+# Enforces PEP 257 docstring conventions
+flake8-docstrings==1.7.0
 
 # ============================================================
 # PRODUCTION SERVER (Required for Docker deployment)
@@ -208,9 +213,3 @@ coverage[toml]==7.3.2
 # - Generates realistic test data
 # - Example: UserFactory.create() creates a complete user
 factory-boy==3.3.0
-
-# Faker: Generates fake data for testing
-# - Creates realistic names, emails, addresses, etc.
-# - Used by factory-boy for random data generation
-# - Makes tests more realistic
-Faker==20.1.0

@@ -9,7 +9,7 @@ import { useAuthStore } from '@/lib/store'
 export default function RegisterPage() {
   const router = useRouter()
   const setAuth = useAuthStore((state) => state.setAuth)
-  
+
   // Form state
   const [formData, setFormData] = useState({
     full_name: '',
@@ -54,13 +54,21 @@ export default function RegisterPage() {
       )
 
       // Auto-login after registration
-      const loginResponse = await authApi.login(formData.email, formData.password)
-      setAuth(loginResponse.user, loginResponse.access_token, loginResponse.refresh_token)
-      
+      const loginResponse = await authApi.login(
+        formData.email,
+        formData.password
+      )
+      setAuth(
+        loginResponse.user,
+        loginResponse.access_token,
+        loginResponse.refresh_token
+      )
+
       // Redirect to dashboard
       router.push('/dashboard')
     } catch (err: any) {
-      const message = err.response?.data?.error || 'Registration failed. Please try again.'
+      const message =
+        err.response?.data?.error || 'Registration failed. Please try again.'
       setError(message)
     } finally {
       setIsLoading(false)
@@ -75,9 +83,7 @@ export default function RegisterPage() {
           <h1 className="text-4xl font-bold text-primary-600 mb-2">
             Task Manager
           </h1>
-          <p className="text-gray-600">
-            Create your account to get started
-          </p>
+          <p className="text-gray-600">Create your account to get started</p>
         </div>
 
         {/* Register Card */}
@@ -95,7 +101,10 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Full Name */}
             <div>
-              <label htmlFor="full_name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="full_name"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Full Name
               </label>
               <input
@@ -113,7 +122,10 @@ export default function RegisterPage() {
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Email Address
               </label>
               <input
@@ -131,7 +143,10 @@ export default function RegisterPage() {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Password
               </label>
               <input
@@ -146,13 +161,17 @@ export default function RegisterPage() {
                 disabled={isLoading}
               />
               <p className="mt-1 text-xs text-gray-500">
-                Must be at least 8 characters with uppercase, lowercase, and number
+                Must be at least 8 characters with uppercase, lowercase, and
+                number
               </p>
             </div>
 
             {/* Confirm Password */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Confirm Password
               </label>
               <input
@@ -181,7 +200,10 @@ export default function RegisterPage() {
           {/* Login Link */}
           <div className="mt-6 text-center text-sm text-gray-600">
             Already have an account?{' '}
-            <Link href="/login" className="text-primary-600 hover:text-primary-700 font-medium">
+            <Link
+              href="/login"
+              className="text-primary-600 hover:text-primary-700 font-medium"
+            >
               Sign in here
             </Link>
           </div>

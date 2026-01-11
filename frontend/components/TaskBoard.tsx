@@ -2,8 +2,13 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { tasksApi } from '@/lib/api'
-import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd'
-import { MoreVertical, Clock, AlertCircle } from 'lucide-react'
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from '@hello-pangea/dnd'
+import { Clock } from 'lucide-react'
 import { getPriorityColor, getInitials } from '@/lib/utils'
 
 interface TaskBoardProps {
@@ -19,14 +24,21 @@ const COLUMNS = [
   { id: 'DONE', title: 'Done', color: 'bg-green-100' },
 ]
 
-export default function TaskBoard({ tasks, projectId, onTaskClick }: TaskBoardProps) {
+export default function TaskBoard({
+  tasks,
+  projectId,
+  onTaskClick,
+}: TaskBoardProps) {
   const queryClient = useQueryClient()
 
   // Group tasks by status
-  const tasksByStatus = COLUMNS.reduce((acc, column) => {
-    acc[column.id] = tasks.filter((task) => task.status === column.id)
-    return acc
-  }, {} as Record<string, any[]>)
+  const tasksByStatus = COLUMNS.reduce(
+    (acc, column) => {
+      acc[column.id] = tasks.filter((task) => task.status === column.id)
+      return acc
+    },
+    {} as Record<string, any[]>
+  )
 
   // Update task status when dragged
   const updateTaskStatus = useMutation({
@@ -64,9 +76,7 @@ export default function TaskBoard({ tasks, projectId, onTaskClick }: TaskBoardPr
             {/* Column Header */}
             <div className={`${column.color} rounded-t-lg px-4 py-3`}>
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-gray-900">
-                  {column.title}
-                </h3>
+                <h3 className="font-semibold text-gray-900">{column.title}</h3>
                 <span className="text-sm text-gray-600 bg-white px-2 py-0.5 rounded-full">
                   {tasksByStatus[column.id]?.length || 0}
                 </span>
@@ -101,7 +111,9 @@ export default function TaskBoard({ tasks, projectId, onTaskClick }: TaskBoardPr
                         >
                           {/* Priority Badge */}
                           <div className="flex items-start justify-between mb-2">
-                            <span className={`badge text-xs ${getPriorityColor(task.priority)}`}>
+                            <span
+                              className={`badge text-xs ${getPriorityColor(task.priority)}`}
+                            >
                               {task.priority}
                             </span>
                           </div>
