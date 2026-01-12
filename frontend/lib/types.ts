@@ -28,6 +28,12 @@ export interface Project {
   created_at: string
   updated_at: string
   member_count?: number
+  task_summary?: {
+    TODO: number
+    IN_PROGRESS: number
+    IN_REVIEW: number
+    DONE: number
+  }
 }
 
 // Task types
