@@ -8,6 +8,7 @@ export interface User {
   email: string
   username: string
   full_name: string
+  role?: string
   created_at: string
   updated_at: string
 }
@@ -26,6 +27,7 @@ export interface Project {
   created_by: string
   created_at: string
   updated_at: string
+  member_count?: number
 }
 
 // Task types

@@ -5,6 +5,7 @@ import { projectsApi } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
 import Link from 'next/link'
 import { FolderKanban, ListTodo, CheckCircle2, Clock } from 'lucide-react'
+import type { Project } from '@/lib/types'
 
 export default function DashboardPage() {
   const user = useAuthStore((state) => state.user)
