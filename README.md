@@ -1,5 +1,8 @@
 # Task Management Application
 
+![CI Pipeline](https://github.com/vee-kay8/task-management-app/workflows/CI%20Pipeline/badge.svg)
+[![codecov](https://codecov.io/gh/vee-kay8/task-management-app/branch/main/graph/badge.svg)](https://codecov.io/gh/vee-kay8/task-management-app)
+
 A full-stack task management application built with Flask (Python), Next.js (React/TypeScript), and PostgreSQL, fully containerized with Docker.
 
 ## 🚀 Quick Start (One Command!)
