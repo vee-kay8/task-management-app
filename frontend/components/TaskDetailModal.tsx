@@ -215,7 +215,9 @@ export default function TaskDetailModal({
                     <p className="text-sm font-medium text-gray-900">
                       Created by user
                     </p>
-                    <p className="text-xs text-gray-500">ID: {task.created_by}</p>
+                    <p className="text-xs text-gray-500">
+                      ID: {task.created_by}
+                    </p>
                   </div>
                 </div>
               </div>
