@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { tasksApi, usersApi } from '@/lib/api'
 import { X } from 'lucide-react'
-import type { User, ApiError } from '@/lib/types'
+import type { User, ApiError, TaskStatus, TaskPriority } from '@/lib/types'
 
 interface CreateTaskModalProps {
   isOpen: boolean
@@ -39,7 +39,7 @@ export default function CreateTaskModal({
     enabled: isOpen,
   })
 
-  const users = usersData?.users || []
+  const users = usersData || []
 
   if (!isOpen) return null
 
@@ -53,8 +53,8 @@ export default function CreateTaskModal({
         project_id: projectId,
         title: formData.title,
         description: formData.description || undefined,
-        status: formData.status,
-        priority: formData.priority,
+        status: formData.status as TaskStatus,
+        priority: formData.priority as TaskPriority,
         assigned_to_id: formData.assigned_to_id || undefined,
         due_date: formData.due_date || undefined,
         estimated_hours: formData.estimated_hours

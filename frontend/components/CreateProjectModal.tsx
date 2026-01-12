@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { projectsApi } from '@/lib/api'
 import { X } from 'lucide-react'
-import type { ApiError } from '@/lib/types'
+import type { ApiError, ProjectStatus } from '@/lib/types'
 
 interface CreateProjectModalProps {
   isOpen: boolean
@@ -49,7 +49,10 @@ export default function CreateProjectModal({
 
     try {
       console.log('Creating project with data:', formData)
-      const response = await projectsApi.create(formData)
+      const response = await projectsApi.create({
+        ...formData,
+        status: formData.status as ProjectStatus,
+      })
       console.log('Project created successfully:', response)
       onSuccess()
       // Reset form

@@ -14,6 +14,7 @@ export default function RegisterPage() {
   // Form state
   const [formData, setFormData] = useState({
     full_name: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -49,9 +50,10 @@ export default function RegisterPage() {
     try {
       // Register user
       await authApi.register(
-        formData.full_name,
         formData.email,
-        formData.password
+        formData.username,
+        formData.password,
+        formData.full_name
       )
 
       // Auto-login after registration
@@ -118,6 +120,27 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 className="input"
                 placeholder="John Doe"
+                disabled={isLoading}
+              />
+            </div>
+
+            {/* Username */}
+            <div>
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Username
+              </label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                required
+                value={formData.username}
+                onChange={handleChange}
+                className="input"
+                placeholder="johndoe"
                 disabled={isLoading}
               />
             </div>

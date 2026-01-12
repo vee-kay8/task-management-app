@@ -51,16 +51,16 @@ export interface Task {
   due_date?: string
   estimated_hours?: number
   actual_hours?: number
-  tags?: string
+  tags?: string[]
   created_by: string
   created_at: string
   updated_at: string
   assignee?: User
-  comments?: Comment[]
+  comments?: TaskComment[]
 }
 
 // Comment types
-export interface Comment {
+export interface TaskComment {
   id: string
   task_id: string
   user_id: string

@@ -102,6 +102,10 @@ export const tasksApi = {
     // Mock implementation
     return mockTasks.filter((t) => t.project_id === projectId)
   },
+  get: async (taskId: string) => {
+    // Mock implementation
+    return mockTasks.find((t) => t.id === taskId) || null
+  },
   create: async (data: Partial<Task>) => {
     // Mock implementation
     const newTask = { id: Date.now().toString(), ...data } as Task
@@ -119,11 +123,34 @@ export const tasksApi = {
       mockTasks.splice(index, 1)
     }
   },
+  addComment: async (taskId: string, content: string) => {
+    // Mock implementation
+    return {
+      id: Date.now().toString(),
+      task_id: taskId,
+      user_id: '1',
+      content,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      user: {
+        id: '1',
+        email: 'user@example.com',
+        username: 'user',
+        full_name: 'Test User',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    }
+  },
 }
 
 // Users API
 export const usersApi = {
   getAll: async () => {
+    // Mock implementation
+    return mockUsers
+  },
+  list: async () => {
     // Mock implementation
     return mockUsers
   },

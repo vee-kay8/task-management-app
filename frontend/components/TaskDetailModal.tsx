@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { tasksApi } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
+import type { Task, TaskComment } from '@/lib/types'
 import {
   X,
   Calendar,
@@ -45,10 +46,13 @@ export default function TaskDetailModal({
 
   // Add comment mutation
   const addComment = useMutation({
-    mutationFn: (content: string) => tasksApi.addComment(task.id, content),
+    mutationFn: (content: string) =>
+      task ? tasksApi.addComment(task.id, content) : Promise.reject(),
     onSuccess: () => {
       setCommentContent('')
-      queryClient.invalidateQueries({ queryKey: ['task', task.id] })
+      if (task) {
+        queryClient.invalidateQueries({ queryKey: ['task', task.id] })
+      }
       onUpdate()
     },
   })
@@ -59,6 +63,8 @@ export default function TaskDetailModal({
       addComment.mutate(commentContent)
     }
   }
+
+  if (!task) return null
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -138,7 +144,7 @@ export default function TaskDetailModal({
                 {/* Comments List */}
                 <div className="space-y-4">
                   {task.comments && task.comments.length > 0 ? (
-                    task.comments.map((comment: Comment) => (
+                    task.comments.map((comment: TaskComment) => (
                       <div key={comment.id} className="flex space-x-3">
                         <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-medium flex-shrink-0">
                           {getInitials(comment.user.full_name)}
@@ -199,19 +205,17 @@ export default function TaskDetailModal({
               {/* Reporter */}
               <div>
                 <h3 className="text-sm font-medium text-gray-700 mb-2">
-                  Reporter
+                  Created By
                 </h3>
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-medium">
-                    {getInitials(task.reporter.full_name)}
+                    CB
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">
-                      {task.reporter.full_name}
+                      Created by user
                     </p>
-                    <p className="text-xs text-gray-500">
-                      {task.reporter.email}
-                    </p>
+                    <p className="text-xs text-gray-500">ID: {task.created_by}</p>
                   </div>
                 </div>
               </div>

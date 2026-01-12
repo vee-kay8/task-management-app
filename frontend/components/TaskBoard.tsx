@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { tasksApi } from '@/lib/api'
+import type { Task } from '@/lib/types'
 import {
   DragDropContext,
   Droppable,
