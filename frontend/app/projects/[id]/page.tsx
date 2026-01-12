@@ -20,20 +20,16 @@ export default function ProjectDetailPage() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
 
   // Fetch project details
-  const { data: projectData, isLoading: projectLoading } = useQuery({
+  const { data: project, isLoading: projectLoading } = useQuery({
     queryKey: ['project', projectId],
     queryFn: () => projectsApi.get(projectId),
   })
 
-  const project = projectData?.project
-
   // Fetch tasks
-  const { data: tasksData, isLoading: tasksLoading } = useQuery({
+  const { data: tasks = [], isLoading: tasksLoading } = useQuery({
     queryKey: ['tasks', projectId],
-    queryFn: () => tasksApi.list(projectId),
+    queryFn: () => tasksApi.getByProject(projectId),
   })
-
-  const tasks = tasksData?.tasks || []
 
   if (projectLoading) {
     return (
