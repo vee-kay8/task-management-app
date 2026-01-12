@@ -67,8 +67,7 @@ export function formatRelativeTime(dateString: string): string {
 
   if (diffMins < 1) return 'just now'
   if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`
-  if (diffHours < 24)
-    return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`
+  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`
   if (diffDays < 30) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`
   return formatDate(dateString)
 }

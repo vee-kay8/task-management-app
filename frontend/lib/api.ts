@@ -15,15 +15,34 @@ export const authApi = {
   login: async (email: string, _password: string) => {
     // Mock implementation
     return {
-      user: { id: '1', email, username: email.split('@')[0], full_name: 'Test User', created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+      user: {
+        id: '1',
+        email,
+        username: email.split('@')[0],
+        full_name: 'Test User',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
       access_token: 'mock-access-token',
       refresh_token: 'mock-refresh-token',
     }
   },
-  register: async (email: string, username: string, _password: string, full_name: string) => {
+  register: async (
+    email: string,
+    username: string,
+    _password: string,
+    full_name: string
+  ) => {
     // Mock implementation
     return {
-      user: { id: '1', email, username, full_name, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+      user: {
+        id: '1',
+        email,
+        username,
+        full_name,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
       access_token: 'mock-access-token',
       refresh_token: 'mock-refresh-token',
     }
@@ -34,9 +53,10 @@ export const authApi = {
 export const projectsApi = {
   list: async (params?: { page?: number; status?: string }) => {
     // Mock implementation with pagination
-    const filtered = params?.status && params.status !== 'all' 
-      ? mockProjects.filter((p) => p.status === params.status)
-      : mockProjects
+    const filtered =
+      params?.status && params.status !== 'all'
+        ? mockProjects.filter((p) => p.status === params.status)
+        : mockProjects
     return {
       projects: filtered,
       total: filtered.length,
@@ -108,4 +128,3 @@ export const usersApi = {
     return mockUsers
   },
 }
-
