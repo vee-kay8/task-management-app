@@ -60,10 +60,13 @@ export default function CreateProjectModal({
         start_date: '',
         end_date: '',
       })
-    } catch (err: any) {
-      console.error('Error creating project:', err)
+    } catch (err) {
+      const error = err as ApiError
+      console.error('Error creating project:', error)
       const errorMessage =
-        err.message || err.response?.data?.error || 'Failed to create project'
+        error.message ||
+        error.response?.data?.error ||
+        'Failed to create project'
       setError(errorMessage)
     } finally {
       setIsLoading(false)

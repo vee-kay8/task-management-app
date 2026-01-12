@@ -81,8 +81,9 @@ export default function CreateTaskModal({
         estimated_hours: '',
         tags: '',
       })
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to create task')
+    } catch (err) {
+      const error = err as ApiError
+      setError(error.response?.data?.error || 'Failed to create task')
     } finally {
       setIsLoading(false)
     }
@@ -195,7 +196,7 @@ export default function CreateTaskModal({
               className="input"
             >
               <option value="">Unassigned</option>
-              {users.map((user: any) => (
+              {users.map((user: User) => (
                 <option key={user.id} value={user.id}>
                   {user.full_name} ({user.email})
                 </option>

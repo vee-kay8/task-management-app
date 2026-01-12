@@ -12,9 +12,9 @@ import { Clock } from 'lucide-react'
 import { getPriorityColor, getInitials } from '@/lib/utils'
 
 interface TaskBoardProps {
-  tasks: any[]
+  tasks: Task[]
   projectId: string
-  onTaskClick: (task: any) => void
+  onTaskClick: (task: Task) => void
 }
 
 const COLUMNS = [
@@ -37,7 +37,7 @@ export default function TaskBoard({
       acc[column.id] = tasks.filter((task) => task.status === column.id)
       return acc
     },
-    {} as Record<string, any[]>
+    {} as Record<string, Task[]>
   )
 
   // Update task status when dragged

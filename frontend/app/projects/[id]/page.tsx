@@ -16,7 +16,7 @@ export default function ProjectDetailPage() {
   const projectId = params.id as string
 
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false)
-  const [selectedTask, setSelectedTask] = useState<any>(null)
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null)
 
   // Fetch project details
   const { data: projectData, isLoading: projectLoading } = useQuery({

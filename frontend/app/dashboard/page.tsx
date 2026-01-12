@@ -4,12 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { projectsApi } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
 import Link from 'next/link'
-import {
-  FolderKanban,
-  ListTodo,
-  CheckCircle2,
-  Clock,
-} from 'lucide-react'
+import { FolderKanban, ListTodo, CheckCircle2, Clock } from 'lucide-react'
 
 export default function DashboardPage() {
   const user = useAuthStore((state) => state.user)
@@ -61,7 +56,7 @@ export default function DashboardPage() {
                 Active Projects
               </p>
               <p className="mt-2 text-3xl font-bold text-gray-900">
-                {projects.filter((p: any) => p.status === 'ACTIVE').length}
+                {projects.filter((p: Project) => p.status === 'ACTIVE').length}
               </p>
             </div>
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -76,7 +71,10 @@ export default function DashboardPage() {
             <div>
               <p className="text-sm font-medium text-gray-600">In Planning</p>
               <p className="mt-2 text-3xl font-bold text-gray-900">
-                {projects.filter((p: any) => p.status === 'PLANNING').length}
+                {
+                  projects.filter((p: Project) => p.status === 'PLANNING')
+                    .length
+                }
               </p>
             </div>
             <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -91,7 +89,10 @@ export default function DashboardPage() {
             <div>
               <p className="text-sm font-medium text-gray-600">Completed</p>
               <p className="mt-2 text-3xl font-bold text-gray-900">
-                {projects.filter((p: any) => p.status === 'COMPLETED').length}
+                {
+                  projects.filter((p: Project) => p.status === 'COMPLETED')
+                    .length
+                }
               </p>
             </div>
             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -132,7 +133,7 @@ export default function DashboardPage() {
           </div>
         ) : (
           <div className="space-y-3">
-            {projects.slice(0, 5).map((project: any) => (
+            {projects.slice(0, 5).map((project: Project) => (
               <Link
                 key={project.id}
                 href={`/projects/${project.id}`}

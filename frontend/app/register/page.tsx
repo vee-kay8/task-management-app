@@ -66,9 +66,10 @@ export default function RegisterPage() {
 
       // Redirect to dashboard
       router.push('/dashboard')
-    } catch (err: any) {
+    } catch (err) {
+      const error = err as ApiError
       const message =
-        err.response?.data?.error || 'Registration failed. Please try again.'
+        error.response?.data?.error || 'Registration failed. Please try again.'
       setError(message)
     } finally {
       setIsLoading(false)

@@ -22,7 +22,7 @@ import {
 } from '@/lib/utils'
 
 interface TaskDetailModalProps {
-  task: any
+  task: Task
   onClose: () => void
   onUpdate: () => void
 }
@@ -138,7 +138,7 @@ export default function TaskDetailModal({
                 {/* Comments List */}
                 <div className="space-y-4">
                   {task.comments && task.comments.length > 0 ? (
-                    task.comments.map((comment: any) => (
+                    task.comments.map((comment: Comment) => (
                       <div key={comment.id} className="flex space-x-3">
                         <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-sm font-medium flex-shrink-0">
                           {getInitials(comment.user.full_name)}

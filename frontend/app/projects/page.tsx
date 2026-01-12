@@ -15,10 +15,7 @@ export default function ProjectsPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
   // Fetch projects
-  const {
-    data: projectsData,
-    isLoading,
-  } = useQuery({
+  const { data: projectsData, isLoading } = useQuery({
     queryKey: ['projects', statusFilter],
     queryFn: async () => {
       // Fetch all projects by requesting a large per_page value
@@ -35,7 +32,7 @@ export default function ProjectsPage() {
 
   // Filter projects by search
   const filteredProjects = projects.filter(
-    (project: any) =>
+    (project: Project) =>
       project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       project.description?.toLowerCase().includes(searchQuery.toLowerCase())
   )
@@ -59,7 +56,8 @@ export default function ProjectsPage() {
       await projectsApi.delete(projectId)
       // Invalidate cache to refresh the list
       await queryClient.invalidateQueries({ queryKey: ['projects'] })
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as ApiError
       alert(error.message || 'Failed to delete project')
     } finally {
       setDeletingId(null)
@@ -147,7 +145,7 @@ export default function ProjectsPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project: any) => (
+          {filteredProjects.map((project: Project) => (
             <div key={project.id} className="relative">
               <Link
                 href={`/projects/${project.id}`}
