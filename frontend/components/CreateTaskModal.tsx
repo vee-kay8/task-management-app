@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { tasksApi, usersApi } from '@/lib/api'
 import { X } from 'lucide-react'
+import type { User, ApiError } from '@/lib/types'
 
 interface CreateTaskModalProps {
   isOpen: boolean

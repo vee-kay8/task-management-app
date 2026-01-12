@@ -6,6 +6,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Plus, FolderKanban, Search, Trash2 } from 'lucide-react'
 import CreateProjectModal from '@/components/CreateProjectModal'
+import type { Project, ApiError } from '@/lib/types'
 
 export default function ProjectsPage() {
   const queryClient = useQueryClient()

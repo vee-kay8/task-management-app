@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { projectsApi } from '@/lib/api'
 import { X } from 'lucide-react'
+import type { ApiError } from '@/lib/types'
 
 interface CreateProjectModalProps {
   isOpen: boolean

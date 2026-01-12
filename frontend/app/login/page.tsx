@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { authApi } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
+import type { ApiError } from '@/lib/types'
 
 export default function LoginPage() {
   const router = useRouter()
