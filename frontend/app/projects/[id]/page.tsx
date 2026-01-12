@@ -8,6 +8,7 @@ import { ArrowLeft, Plus, Users } from 'lucide-react'
 import Link from 'next/link'
 import TaskBoard from '@/components/TaskBoard'
 import CreateTaskModal from '@/components/CreateTaskModal'
+import type { Task } from '@/lib/types'
 import TaskDetailModal from '@/components/TaskDetailModal'
 
 export default function ProjectDetailPage() {
