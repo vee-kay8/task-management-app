@@ -32,6 +32,7 @@ instance/
 .env
 .env.local
 .env.*.local
+.env.aws
 
 # Database
 *.db
