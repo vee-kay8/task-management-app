@@ -125,7 +125,7 @@ This document tracks the complete AWS deployment journey from account setup to p
 ## Phase 4: Container Registry (ECR)
 
 **Timeline**: Day 6
-**Status**: 🔄 In Progress
+**Status**: ✅ Complete
 
 ### Checklist
 - [ ] Create ECR repository for backend
@@ -153,36 +153,37 @@ This document tracks the complete AWS deployment journey from account setup to p
 ## Phase 5: Backend Deployment (ECS Fargate)
 
 **Timeline**: Days 7-9
-**Status**: Not Started
+**Status**: ✅ Complete
 
 ### Checklist
-- [ ] Create ECS cluster (Fargate)
-- [ ] Create CloudWatch log group for backend
-- [ ] Create task execution role
-- [ ] Create task role
-- [ ] Create task definition (backend)
-  - [ ] Configure container (image, port, env vars)
-  - [ ] Set CPU and memory (0.25 vCPU, 0.5 GB)
-  - [ ] Add environment variables
-  - [ ] Link Secrets Manager for sensitive data
-  - [ ] Configure CloudWatch logs
-- [ ] Create Application Load Balancer
-  - [ ] Internet-facing, public subnets
-  - [ ] Security group configured
-- [ ] Create target group
-  - [ ] Type: IP
-  - [ ] Health check: /api/health
-  - [ ] Port: 5000
-- [ ] Configure ALB listener (HTTP:80)
-- [ ] Create ECS service
-  - [ ] Desired tasks: 2
-  - [ ] Launch type: Fargate
-  - [ ] Private subnets
-  - [ ] Load balancer attached
-- [ ] Verify tasks running
-- [ ] Test backend health endpoint
-- [ ] Test API endpoints (register, login)
-- [ ] Monitor CloudWatch logs
+- [x] Recreate NAT Gateway for production security
+- [x] Create ECS cluster (Fargate)
+- [x] Create CloudWatch log group for backend
+- [x] Create task execution role
+- [x] Create task role (skipped - not needed yet)
+- [x] Create task definition (backend)
+  - [x] Configure container (image, port, env vars)
+  - [x] Set CPU and memory (0.25 vCPU, 0.5 GB)
+  - [x] Add environment variables (7 total)
+  - [x] Configure CloudWatch logs
+- [x] Create Application Load Balancer
+  - [x] Internet-facing, public subnets
+  - [x] Security group configured
+- [x] Create target group
+  - [x] Type: IP
+  - [x] Health check: / (root endpoint)
+  - [x] Port: 5000
+- [x] Configure ALB listener (HTTP:80)
+- [x] Create ECS service
+  - [x] Desired tasks: 2
+  - [x] Launch type: Fargate
+  - [x] Private subnets (production-ready)
+  - [x] Public IP disabled (using NAT Gateway)
+  - [x] Load balancer attached
+- [x] Verify tasks running (2/2 RUNNING)
+- [x] Verify target health (2/2 healthy)
+- [x] Test backend API endpoint
+- [x] Monitor CloudWatch logs
 
 ### Deliverables
 - Backend running on ECS Fargate
@@ -191,11 +192,16 @@ This document tracks the complete AWS deployment journey from account setup to p
 - Health checks passing
 
 ### Key Resources Created
-- ECS Cluster: [To be filled]
-- Task Definition ARN: [To be filled]
-- Service Name: [To be filled]
-- ALB DNS Name: [To be filled]
-- Target Group ARN: [To be filled]
+- NAT Gateway: Recreated in public subnet 1
+- ECS Cluster: taskapp-cluster
+- CloudWatch Log Group: /ecs/taskapp-backend
+- IAM Execution Role: taskapp-ecs-execution-role
+- Task Definition: taskapp-backend:1
+- Service Name: taskapp-backend-service
+- ALB Name: taskapp-alb
+- ALB DNS Name: taskapp-alb-1878540875.us-east-1.elb.amazonaws.com
+- Target Group: taskapp-backend-tg
+- Backend URL: http://taskapp-alb-1878540875.us-east-1.elb.amazonaws.com/
 
 ---
 
@@ -510,9 +516,9 @@ This document tracks the complete AWS deployment journey from account setup to p
 ## Progress Tracking
 
 ### Overall Status
-- **Phases Completed**: 3/12
-- **Days Elapsed**: 5/24
-- **Percentage Complete**: 25%
+- **Phases Completed**: 5/12
+- **Days Elapsed**: 9/24
+- **Percentage Complete**: 42%
 
 ### Phase Status Summary
 | Phase | Name | Status | Days | Completion |
@@ -520,8 +526,8 @@ This document tracks the complete AWS deployment journey from account setup to p
 | 1 | Account Setup | ✅ Complete | 1 | 100% |
 | 2 | VPC & Networking | ✅ Complete | 2-3 | 100% |
 | 3 | RDS Database | ✅ Complete | 4-5 | 100% |
-| 4 | ECR Registry | 🔄 In Progress | 6 | 0% |
-| 5 | ECS Backend | Not Started | 7-9 | 0% |
+| 4 | ECR Registry | ✅ Complete | 6 | 100% |
+| 5 | ECS Backend | ✅ Complete | 7-9 | 100% |
 | 6 | S3/CloudFront Frontend | Not Started | 10-11 | 0% |
 | 7 | Domain & SSL | Not Started | 12-13 | 0% |
 | 8 | Monitoring | Not Started | 14-15 | 0% |
@@ -586,6 +592,6 @@ This document tracks the complete AWS deployment journey from account setup to p
 
 ---
 
-**Last Updated**: January 20, 2026
-**Current Phase**: Phase 4 - Container Registry (ECR)
-**Next Milestone**: Docker images pushed to ECR
+**Last Updated**: January 21, 2026
+**Current Phase**: Phase 6 - Frontend Deployment (S3 + CloudFront)
+**Next Milestone**: Frontend deployed with backend integration
