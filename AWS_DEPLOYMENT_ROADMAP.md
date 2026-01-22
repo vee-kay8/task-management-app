@@ -2,7 +2,7 @@
 
 **Project**: Task Management Application Deployment to AWS
 **Duration**: 3-4 weeks
-**Status**: In Progress (7/12 phases complete - 58%)
+**Status**: In Progress (9/12 phases complete - 75%)
 **Live Application**: https://app.techveesolutions.com
 
 ---
@@ -311,108 +311,134 @@ This document tracks the complete AWS deployment journey from account setup to p
 
 ---
 
-## Phase 8: Monitoring & Logging
+## Phase 8: Monitoring & Logging ✅
 
-**Timeline**: Days 14-15
-**Status**: Not Started
+**Timeline**: Day 12 (Completed in 3 hours)
+**Status**: ✅ Complete (100%)
 
 ### Checklist
-- [ ] Verify CloudWatch log groups created
-- [ ] Configure log retention (7-30 days)
-- [ ] Create CloudWatch dashboard
-  - [ ] ECS metrics (CPU, memory, tasks)
-  - [ ] ALB metrics (requests, latency, errors)
-  - [ ] RDS metrics (connections, CPU, storage)
-  - [ ] CloudFront metrics (requests, errors)
-- [ ] Create CloudWatch alarms
-  - [ ] ECS high CPU (>80%)
-  - [ ] ECS high memory (>80%)
-  - [ ] ALB high error rate (>5%)
-  - [ ] ALB high latency (>1s)
-  - [ ] RDS high CPU (>80%)
-  - [ ] RDS low storage (<2GB)
-  - [ ] RDS connection limit
-- [ ] Create SNS topic for alerts
-- [ ] Subscribe email to SNS topic
-- [ ] Link alarms to SNS topic
-- [ ] Test alarm notifications
-- [ ] Enable RDS Enhanced Monitoring
-- [ ] Enable VPC Flow Logs (optional)
-- [ ] Document monitoring setup
+- [x] Verify CloudWatch log groups created
+- [x] Configure log retention (30 days)
+- [x] Create SNS topic for alerts (taskapp-alerts)
+- [x] Subscribe email to SNS topic (vokeogigbah@gmail.com)
+- [x] Create CloudWatch alarms (6 alarms)
+  - [x] Backend unhealthy targets
+  - [x] Frontend unhealthy targets
+  - [x] ALB 5xx errors (>10 in 5 min)
+  - [x] RDS high CPU (>80%)
+  - [x] RDS low storage (<2GB)
+  - [x] ECS task failures
+- [x] Create CloudWatch dashboard (taskapp-production)
+  - [x] ALB request count
+  - [x] Target response time
+  - [x] ECS CPU utilization
+  - [x] ECS memory utilization
+  - [x] RDS database connections
+  - [x] RDS CPU gauge
+- [x] Create Log Insights saved queries (4 queries)
+  - [x] Recent errors
+  - [x] API response times
+  - [x] Failed login attempts
+  - [x] Slowest requests
 
 ### Deliverables
-- Comprehensive monitoring dashboard
-- Critical alarms configured
-- Email notifications working
-- Logging strategy documented
+- ✅ Comprehensive monitoring dashboard (6 widgets)
+- ✅ Critical alarms configured (6 alarms)
+- ✅ Email notifications configured
+- ✅ Log Insights queries saved (4 queries)
+- ✅ 30-day log retention to control costs
 
 ### Key Resources Created
-- Dashboard Name: [To be filled]
-- SNS Topic ARN: [To be filled]
-- Number of Alarms: [To be filled]
+- **Dashboard**: taskapp-production (https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#dashboards/dashboard/taskapp-production)
+- **SNS Topic ARN**: arn:aws:sns:us-east-1:858448674350:taskapp-alerts
+- **Email Subscription**: vokeogigbah@gmail.com
+- **Alarms Created**: 6 (unhealthy targets, 5xx errors, RDS CPU/storage, task failures)
+- **Log Groups**: /ecs/taskapp-backend, /ecs/taskapp-frontend (30-day retention)
+- **Saved Queries**: 4 (errors, response times, failed logins, slow requests)
+
+### Lessons Learned
+- **Windows Git Bash**: AWS CLI commands with paths require `MSYS_NO_PATHCONV=1` prefix to prevent path conversion
+- **CloudWatch Metrics**: Auto-detection works well without explicit dimensions for most AWS services
+- **Cost Control**: 30-day log retention prevents unlimited storage costs (~$5-10/month total)
+- **Dashboard Efficiency**: CLI creation faster than manual Console widget configuration
+
+### Cost Impact
+- **Monthly**: +$5-10 (CloudWatch Logs, metrics, alarms)
+- **Total Running Cost**: ~$100-105/month
 
 ---
 
 ## Phase 9: Infrastructure as Code (Terraform)
 
 **Timeline**: Days 16-18
-**Status**: Not Started
+**Status**: ✅ Complete
 
 ### Checklist
-- [ ] Install Terraform
-- [ ] Create terraform directory structure
-- [ ] Create provider.tf (AWS provider config)
-- [ ] Create variables.tf (input variables)
-- [ ] Create terraform.tfvars (variable values)
-- [ ] Create networking.tf
-  - [ ] VPC, subnets, route tables
-  - [ ] Internet Gateway, NAT Gateway
-  - [ ] Security groups
-- [ ] Create database.tf
-  - [ ] RDS subnet group
-  - [ ] RDS instance
-  - [ ] Secrets Manager
-- [ ] Create ecr.tf
-  - [ ] ECR repositories
-- [ ] Create ecs.tf
-  - [ ] ECS cluster
-  - [ ] Task definitions
-  - [ ] Services
-- [ ] Create alb.tf
-  - [ ] Load balancer
-  - [ ] Target groups
-  - [ ] Listeners
-- [ ] Create s3.tf
-  - [ ] S3 bucket for frontend
-- [ ] Create cloudfront.tf
-  - [ ] CloudFront distribution
-- [ ] Create route53.tf
-  - [ ] Hosted zone
-  - [ ] DNS records
-- [ ] Create acm.tf
-  - [ ] SSL certificates
-- [ ] Create monitoring.tf
-  - [ ] CloudWatch alarms
-  - [ ] SNS topics
-- [ ] Create outputs.tf (output values)
-- [ ] Run terraform init
-- [ ] Run terraform plan
-- [ ] Run terraform apply (test environment)
-- [ ] Verify infrastructure created
-- [ ] Document Terraform usage
-- [ ] Create README for Terraform
+- [x] Install Terraform
+- [x] Create terraform directory structure
+- [x] Create provider.tf (AWS provider config)
+- [x] Create variables.tf (input variables)
+- [x] Create terraform.tfvars (variable values)
+- [x] Create modules/vpc (VPC, subnets, gateways, routing)
+- [x] Create modules/security (Security groups)
+- [x] Create modules/rds (RDS instance and subnet group)
+- [x] Create modules/ecr (ECR repositories)
+- [x] Create modules/ecs (Cluster, task definitions, services)
+- [x] Create modules/alb (Load balancer, target groups, listeners)
+- [x] Create modules/route53 (DNS A record)
+- [x] Create backend.tf (S3 + DynamoDB state management)
+- [x] Run terraform init
+- [x] Import existing VPC infrastructure (15 resources)
+- [x] Import security groups (3 resources)
+- [x] Import RDS database (2 resources)
+- [x] Import ECR repositories (2 resources)
+- [x] Import ECS cluster (1 resource)
+- [x] Import ECS task definitions (2 resources)
+- [x] Import ECS services (2 resources)
+- [x] Import ALB components (6 resources)
+- [x] Import Route 53 record (1 resource)
+- [x] Run terraform plan (verify state matches)
+- [x] Create .gitignore for Terraform
+- [x] Document Terraform usage
 
 ### Deliverables
-- Complete Terraform configuration
-- Reproducible infrastructure
-- Terraform documentation
+- Complete Terraform configuration (35 resources)
+- Remote state backend (S3 + DynamoDB)
+- All existing infrastructure imported
+- Infrastructure as code documentation
+
+### Key Resources Imported
+- **VPC Module**: 15 resources (VPC, 4 subnets, IGW, NAT, EIP, 2 route tables, 4 associations)
+- **Security Module**: 3 security groups (ALB, Backend, RDS)
+- **RDS Module**: taskapp-db (db.t4g.micro, PostgreSQL 16.3), subnet group
+- **ECR Module**: taskapp-backend, taskapp-frontend repositories
+- **ECS Module**: taskapp-cluster, 2 task definitions, 2 services (4 tasks total)
+- **ALB Module**: taskapp-alb, 2 target groups, 2 listeners, 1 listener rule
+- **Route53 Module**: app.techveesolutions.com A record
+- **State Backend**: S3 bucket (taskapp-terraform-state-858448674350), DynamoDB table (taskapp-terraform-locks)
 
 ### Files Created
-- provider.tf
-- variables.tf
-- networking.tf
-- database.tf
-- ecs.tf
+- terraform/provider.tf
+- terraform/variables.tf
+- terraform/terraform.tfvars
+- terraform/backend.tf
+- terraform/main.tf
+- terraform/.gitignore
+- terraform/modules/vpc/ (main.tf, variables.tf, outputs.tf)
+- terraform/modules/security/ (main.tf, variables.tf, outputs.tf)
+- terraform/modules/rds/ (main.tf, variables.tf, outputs.tf)
+- terraform/modules/ecr/ (main.tf, variables.tf, outputs.tf)
+- terraform/modules/ecs/ (main.tf, variables.tf, outputs.tf)
+- terraform/modules/alb/ (main.tf, variables.tf, outputs.tf)
+- terraform/modules/route53/ (main.tf, variables.tf, outputs.tf)
+
+### Lessons Learned
+- **Import Strategy**: Module-by-module import prevents dependency confusion
+- **Sensitive Variables**: Use TF_VAR_* environment variables for secrets (db_password, secret_key, jwt_secret_key)
+- **State Backend**: Configure early to enable team collaboration
+- **ECS Services**: deployment_configuration must use inline arguments, not nested blocks
+- **Task Definitions**: Complex JSON structures imported successfully using jsonencode()
+- **State Locking**: DynamoDB provides state locking for concurrent operations
 - And 10+ more Terraform files
 
 ---
@@ -645,17 +671,17 @@ This document tracks the complete AWS deployment journey from account setup to p
 - These variables must be set at build time, not container runtime
 
 ### Cost Insights
-**Monthly Cost Breakdown (After Phase 7):**
+**Monthly Cost Breakdown (After Phase 8):**
 - RDS db.t3.micro: ~$15.30/month
 - Application Load Balancer: ~$16.20/month
 - NAT Gateway: ~$33.00/month (biggest cost driver)
 - Backend ECS Fargate (2 tasks): ~$18.00/month
 - Frontend ECS Fargate (2 tasks): ~$9.75/month
-- CloudWatch Logs: ~$1.00/month
+- CloudWatch Logs + Metrics: ~$5-10/month
 - ECR Storage: <$1.00/month
 - Route 53 Hosted Zone: $0.50/month
 - SSL Certificate (ACM): **$0.00 (FREE)**
-- **Total Infrastructure: ~$95/month**
+- **Total Infrastructure: ~$100-105/month**
 
 **Cost Optimization Opportunities:**
 - NAT Gateway is 35% of total cost - consider stopping when not actively deploying
@@ -667,10 +693,15 @@ This document tracks the complete AWS deployment journey from account setup to p
 - Leveraged existing wildcard certificate (saved setup time)
 - ACM certificates are always free
 
+**Phase 8 Additions:**
+- CloudWatch monitoring now operational
+- 6 alarms protecting critical infrastructure
+- Dashboard for visual monitoring
+- Log Insights for troubleshooting
+
 ---
 
 **Last Updated**: January 21, 2026
-**Current Phase**: Phase 8 - Monitoring & Logging
-**Next Milestone**: Set up CloudWatch dashboards and alerts
+**Current Phase**: Phase 9 - Terraform Infrastructure as Code
+**Next Milestone**: Convert manual infrastructure to Terraform
 **Application Status**: ✅ **LIVE** at https://app.techveesolutions.com
-**Application Status**: ✅ Fully functional at http://taskapp-alb-1878540875.us-east-1.elb.amazonaws.com
