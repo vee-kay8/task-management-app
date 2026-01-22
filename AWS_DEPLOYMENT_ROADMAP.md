@@ -205,85 +205,102 @@ This document tracks the complete AWS deployment journey from account setup to p
 
 ---
 
-## Phase 6: Frontend Deployment (S3 + CloudFront)
+## Phase 6: Frontend Deployment (ECS Fargate)
 
-**Timeline**: Days 10-11
-**Status**: Not Started
+**Timeline**: Days 10-11  
+**Status**: ✅ Complete
 
 ### Checklist
-- [ ] Update frontend environment variable (API URL to ALB)
-- [ ] Build frontend for production
-- [ ] Create S3 bucket (unique name)
-- [ ] Configure bucket for static website hosting
-- [ ] Upload frontend build files
-- [ ] Create CloudFront distribution
-  - [ ] Origin: S3 bucket
-  - [ ] Origin Access Control (OAC)
-  - [ ] Redirect HTTP to HTTPS
-  - [ ] Default cache behavior
-  - [ ] Compress objects
-- [ ] Update S3 bucket policy (allow CloudFront)
-- [ ] Wait for distribution deployment (15-20 mins)
-- [ ] Test frontend via CloudFront URL
-- [ ] Test full application flow
-  - [ ] Registration
-  - [ ] Login
-  - [ ] Create project
-  - [ ] Create tasks
-  - [ ] Drag and drop tasks
-- [ ] Verify API calls to backend working
+- [x] Update frontend environment variable (API URL to ALB)
+- [x] Update frontend API client to call real backend
+- [x] Build frontend for production (standalone mode)
+- [x] Build Docker image for frontend (with --build-arg)
+- [x] Push frontend image to ECR
+- [x] Create CloudWatch log group for frontend
+- [x] Create frontend task definition (0.25 vCPU, 0.5 GB)
+- [x] Create frontend target group (port 3000)
+- [x] Configure ALB path-based routing
+  - [x] /api/* → backend target group (Priority 1)
+  - [x] /* → frontend target group (Default)
+- [x] Create frontend ECS service (2 tasks)
+- [x] Verify frontend tasks running (2/2 RUNNING)
+- [x] Verify frontend target health (2/2 healthy)
+- [x] Test frontend via ALB URL
+- [x] Test full application flow
+  - [x] Registration
+  - [x] Login
+  - [x] Create project
+  - [x] Create tasks
+  - [x] Drag and drop tasks
+- [x] Verify API calls to backend working
 
 ### Deliverables
-- Frontend deployed to S3
-- CloudFront distribution serving content
-- HTTPS enabled automatically
-- Full application working end-to-end
+- Frontend deployed to ECS Fargate ✅
+- Path-based routing on ALB ✅
+- Full application working end-to-end ✅
+- 2 frontend tasks for high availability ✅
 
 ### Key Resources Created
-- S3 Bucket Name: [To be filled]
-- CloudFront Distribution ID: [To be filled]
-- CloudFront Domain: [To be filled]
+- CloudWatch Log Group: /ecs/taskapp-frontend
+- Task Definition: taskapp-frontend:1
+- Target Group: taskapp-frontend-tg (ARN: arn:aws:elasticloadbalancing:us-east-1:858448674350:targetgroup/taskapp-frontend-tg/bd88abf63d284380)
+- Service Name: taskapp-frontend-service
+- Frontend URL: http://taskapp-alb-1878540875.us-east-1.elb.amazonaws.com/
+- ECR Image Digest: sha256:79f9d2ab47f0c15fd592de1f156c3a9cd7d1b61584ffbd9b68cbbab921098f6a
+
+### Lessons Learned
+- **Critical**: Next.js `NEXT_PUBLIC_*` environment variables are baked at BUILD time, not runtime
+- **Solution**: Must use `docker build --build-arg NEXT_PUBLIC_API_URL=...` to properly configure API URL
+- **Verification**: Always grep the built image to verify environment variables are correctly baked in
+- **Health Checks**: Changed from `/` to `/api/health` for better reliability
+- **Path Routing**: Backend must be Priority 1 (`/api/*`) so frontend default rule (`/*`) catches everything else
 
 ---
 
 ## Phase 7: Domain & SSL Configuration
 
-**Timeline**: Days 12-13
-**Status**: Not Started
+**Timeline**: 2-3 hours
+**Status**: 🔄 In Progress (0%)
 
 ### Checklist
-- [ ] Register domain (Route53 or external)
-- [ ] Create hosted zone in Route53
-- [ ] Request SSL certificate in ACM
-  - [ ] Domain: yourdomain.com
-  - [ ] Wildcard: *.yourdomain.com
+- [ ] Register domain in Route53 (or use existing domain)
+- [ ] Verify hosted zone created/exists
+- [ ] Request SSL certificate in ACM (us-east-1)
+  - [ ] Domain: taskapp.com
+  - [ ] Alternative: www.taskapp.com
   - [ ] Validation method: DNS
-- [ ] Add CNAME records for validation
-- [ ] Wait for certificate validation
-- [ ] Add HTTPS listener to ALB
-- [ ] Attach certificate to ALB
-- [ ] Redirect HTTP to HTTPS on ALB
-- [ ] Update CloudFront distribution
-  - [ ] Add alternate domain (www.yourdomain.com)
-  - [ ] Attach certificate
-- [ ] Create Route53 records
-  - [ ] A record: www.yourdomain.com → CloudFront
-  - [ ] A record: api.yourdomain.com → ALB
-- [ ] Update backend CORS_ORIGINS
-- [ ] Update frontend API_URL
-- [ ] Redeploy backend and frontend
-- [ ] Test with custom domains
-- [ ] Verify HTTPS on both domains
+- [ ] Add CNAME records for certificate validation
+- [ ] Wait for certificate status: "Issued"
+- [ ] Add HTTPS listener to ALB (port 443)
+- [ ] Attach certificate to HTTPS listener
+- [ ] Configure path routing on HTTPS listener
+  - [ ] Priority 1: `/api/*` → backend target group
+  - [ ] Default: `/*` → frontend target group
+- [ ] Update HTTP listener to redirect to HTTPS (301)
+- [ ] Create Route53 A records (alias to ALB)
+  - [ ] A record: taskapp.com → ALB
+  - [ ] A record: www.taskapp.com → ALB
+- [ ] Update backend CORS_ORIGINS environment variable
+- [ ] Redeploy backend with new CORS settings
+- [ ] (Optional) Update frontend API_URL to HTTPS
+- [ ] Test `https://taskapp.com` loads frontend
+- [ ] Test `https://www.taskapp.com` loads frontend
+- [ ] Test `http://taskapp.com` redirects to HTTPS
+- [ ] Verify SSL certificate in browser (green padlock)
+- [ ] Test API calls over HTTPS (no mixed content)
+- [ ] Test full application functionality
 
 ### Deliverables
-- Custom domain configured
-- SSL/HTTPS on frontend and backend
-- Professional URLs working
+- Custom domain configured (taskapp.com)
+- SSL/HTTPS working on ALB
+- Professional URLs operational
+- HTTP to HTTPS redirect functional
 
 ### Key Resources Created
 - Domain Name: [To be filled]
 - Hosted Zone ID: [To be filled]
 - Certificate ARN: [To be filled]
+- HTTPS Listener ARN: [To be filled]
 
 ---
 
@@ -430,9 +447,8 @@ This document tracks the complete AWS deployment journey from account setup to p
 ### GitHub Actions Jobs
 - Build and test
 - Build Docker images
-- Deploy to AWS ECS
-- Deploy frontend to S3
-- CloudFront invalidation
+- Deploy to AWS ECS (backend and frontend)
+- CI/CD updates for ECS deployments
 
 ---
 
@@ -445,19 +461,17 @@ This document tracks the complete AWS deployment journey from account setup to p
 - [ ] Enable AWS Cost Explorer
 - [ ] Review cost breakdown by service
 - [ ] Identify optimization opportunities
-- [ ] Review ECS task sizing
+- [ ] Review ECS task sizing (backend and frontend)
 - [ ] Consider RDS instance right-sizing
-- [ ] Enable ECS auto-scaling
+- [ ] Enable ECS auto-scaling (both services)
   - [ ] Target tracking scaling
   - [ ] Min tasks: 1, Max tasks: 4
   - [ ] CPU target: 70%
 - [ ] Configure ALB target tracking
-- [ ] Review and optimize CloudFront caching
-- [ ] Enable S3 lifecycle policies
+- [ ] Review ALB listener rules and routing
 - [ ] Review RDS backup retention
 - [ ] Enable RDS automated backups
 - [ ] Take manual RDS snapshot
-- [ ] Enable S3 versioning (frontend bucket)
 - [ ] Enable AWS WAF on ALB (optional)
 - [ ] Enable VPC Flow Logs
 - [ ] Review security group rules
@@ -475,10 +489,24 @@ This document tracks the complete AWS deployment journey from account setup to p
 ### Estimated Monthly Costs
 - ECS Fargate: [To be filled]
 - RDS: [To be filled]
-- Load Balancer: [To be filled]
-- NAT Gateway: [To be filled]
-- CloudFront: [To be filled]
-- Total: [To be filled]
+### Estimated Monthly Costs
+
+| Resource | Cost |
+|----------|------|
+| RDS db.t3.micro | ~$15.30 |
+| Application Load Balancer | ~$16.20 |
+| NAT Gateway | ~$33.00 |
+| Backend ECS (2 tasks) | ~$18.00 |
+| Frontend ECS (2 tasks) | ~$9.75 |
+| CloudWatch Logs | ~$1.00 |
+| ECR Storage | <$1.00 |
+| **Total** | **~$94/month** |
+
+**Cost Optimization Options:**
+- Reduce tasks from 2 to 1 per service: Save ~$14/month
+- Stop services when not testing: Save ~$28/month
+- Remove NAT Gateway when not deploying: Save ~$33/month
+- Use t4g.micro RDS (ARM): Save ~$2/month
 
 ---
 
@@ -516,9 +544,9 @@ This document tracks the complete AWS deployment journey from account setup to p
 ## Progress Tracking
 
 ### Overall Status
-- **Phases Completed**: 5/12
-- **Days Elapsed**: 9/24
-- **Percentage Complete**: 42%
+- **Phases Completed**: 6/12
+- **Days Elapsed**: 11/24
+- **Percentage Complete**: 50%
 
 ### Phase Status Summary
 | Phase | Name | Status | Days | Completion |
@@ -528,8 +556,8 @@ This document tracks the complete AWS deployment journey from account setup to p
 | 3 | RDS Database | ✅ Complete | 4-5 | 100% |
 | 4 | ECR Registry | ✅ Complete | 6 | 100% |
 | 5 | ECS Backend | ✅ Complete | 7-9 | 100% |
-| 6 | S3/CloudFront Frontend | Not Started | 10-11 | 0% |
-| 7 | Domain & SSL | Not Started | 12-13 | 0% |
+| 6 | ECS Frontend | ✅ Complete | 10-11 | 100% |
+| 7 | Domain & SSL | 🔄 In Progress | 12-13 | 0% |
 | 8 | Monitoring | Not Started | 14-15 | 0% |
 | 9 | Terraform IaC | Not Started | 16-18 | 0% |
 | 10 | CI/CD Integration | Not Started | 19-20 | 0% |
@@ -565,9 +593,10 @@ This document tracks the complete AWS deployment journey from account setup to p
 - Backend Target Group: 
 
 ### Frontend Resources
-- S3 Bucket: 
-- CloudFront Distribution: 
-- CloudFront Domain: 
+- Frontend Task Definition: taskapp-frontend:1
+- Frontend Service: taskapp-frontend-service
+- Frontend Target Group: taskapp-frontend-tg
+- Frontend CloudWatch Log Group: /ecs/taskapp-frontend
 
 ### Domain & SSL
 - Domain Name: 
@@ -579,19 +608,53 @@ This document tracks the complete AWS deployment journey from account setup to p
 ## Notes & Observations
 
 ### Challenges Encountered
-[To be filled during deployment]
+**Phase 6 - Frontend Deployment:**
+- Next.js environment variables (`NEXT_PUBLIC_*`) are compiled into JavaScript at build time, not runtime
+- Initial deployment showed localhost:5000 in browser because `--build-arg` wasn't used during docker build
+- Multiple rebuild/redeploy cycles needed to diagnose and fix the issue
 
 ### Solutions Implemented
-[To be filled during deployment]
+**Phase 6 - Frontend Deployment:**
+- Modified Dockerfile to accept `ARG NEXT_PUBLIC_API_URL` before the build step
+- Used `docker build --build-arg NEXT_PUBLIC_API_URL=http://taskapp-alb-...` to bake URL at build time
+- Added verification step: `docker run --rm image grep -r 'taskapp-alb' /app/.next/server/` to confirm URL in bundles
+- Documented this critical requirement in AWS_PHASE_6_GUIDE.md troubleshooting section
 
 ### AWS-Specific Learnings
-[To be filled during deployment]
+**ECS Fargate:**
+- Tasks in private subnets require NAT Gateway for ECR image pulls and internet access
+- Health check paths must return 200 OK - Next.js root `/` can redirect (307), use `/api/health` instead
+- Target group health checks run every 30 seconds with 2 consecutive successes required
+
+**Application Load Balancer:**
+- Path-based routing requires careful rule priority - `/api/*` must be Priority 1
+- Default rule (`/*`) catches all remaining traffic, perfect for frontend catch-all routing
+- Both services can share same ALB, reducing costs
+
+**Docker & Next.js:**
+- Next.js standalone mode creates minimal production server (~30MB vs ~300MB)
+- Environment variables prefixed with `NEXT_PUBLIC_` are exposed to browser
+- These variables must be set at build time, not container runtime
 
 ### Cost Insights
-[To be filled during deployment]
+**Monthly Cost Breakdown (After Phase 6):**
+- RDS db.t3.micro: ~$15.30/month
+- Application Load Balancer: ~$16.20/month
+- NAT Gateway: ~$33.00/month (biggest cost driver)
+- Backend ECS Fargate (2 tasks): ~$18.00/month
+- Frontend ECS Fargate (2 tasks): ~$9.75/month
+- CloudWatch Logs: ~$1.00/month
+- ECR Storage: <$1.00/month
+- **Total Infrastructure: ~$94/month**
+
+**Cost Optimization Opportunities:**
+- NAT Gateway is 35% of total cost - consider stopping when not actively deploying
+- Running 1 task per service instead of 2 would save ~$14/month
+- Phase 11 will implement auto-scaling to scale down during low usage
 
 ---
 
 **Last Updated**: January 21, 2026
-**Current Phase**: Phase 6 - Frontend Deployment (S3 + CloudFront)
-**Next Milestone**: Frontend deployed with backend integration
+**Current Phase**: Phase 7 - Domain & SSL Configuration
+**Next Milestone**: Add custom domain with HTTPS support
+**Application Status**: ✅ Fully functional at http://taskapp-alb-1878540875.us-east-1.elb.amazonaws.com

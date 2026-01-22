@@ -173,10 +173,17 @@ ENV NEXT_TELEMETRY_DISABLED 1
 # This enables optimizations in Next.js and other packages
 ENV NODE_ENV production
 
+# Accept build argument for API URL
+# CRITICAL: NEXT_PUBLIC_* variables are baked into JavaScript at BUILD time
+# They CANNOT be changed at runtime - must be set during docker build
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 # WHY SET THESE AT BUILD TIME?
 # - Some optimizations only apply during build
 # - Tree-shaking removes development-only code
 # - Minification and compression are more aggressive
+# - NEXT_PUBLIC_* vars are hardcoded into JS bundles
 
 # ============================================================
 # BUILD THE APPLICATION
@@ -318,9 +325,8 @@ ENV PORT 3000
 # localhost would only allow connections from inside the container
 ENV HOSTNAME "0.0.0.0"
 
-# API URL - Points to backend service
-# Will be overridden in docker-compose to use service name
-ENV NEXT_PUBLIC_API_URL http://localhost:5000/api
+# NOTE: NEXT_PUBLIC_API_URL is baked in at build time from .env.production
+# It cannot be overridden at runtime - must rebuild image if URL changes
 
 # ============================================================
 # HEALTH CHECK

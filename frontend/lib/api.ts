@@ -1,50 +1,109 @@
 /**
  * API client functions
- * Mock implementations for testing - replace with actual API calls
+ * Real API implementation for AWS backend
  */
 
-import type { User, Project, Task } from './types'
+import type { Project, Task } from './types'
 
-// Mock data for testing
-const mockUsers: User[] = []
-const mockProjects: Project[] = []
-const mockTasks: Task[] = []
+// API base URL from environment variable
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+
+// Helper function to get auth token
+const getAuthToken = (): string | null => {
+  if (typeof window === 'undefined') return null
+  return localStorage.getItem('access_token')
+}
+
+// Helper function to make authenticated requests
+const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
+  const token = getAuthToken()
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  }
+  
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
+  }
+
+  // Merge with any additional headers from options
+  if (options.headers) {
+    Object.assign(headers, options.headers)
+  }
+
+  const response = await fetch(url, {
+    ...options,
+    headers,
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'Request failed' }))
+    throw new Error(error.error || error.message || 'Request failed')
+  }
+
+  return response.json()
+}
 
 // Auth API
 export const authApi = {
-  login: async (email: string, _password: string) => {
-    // Mock implementation
-    return {
-      user: {
-        id: '1',
-        email,
-        username: email.split('@')[0],
-        full_name: 'Test User',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      access_token: 'mock-access-token',
-      refresh_token: 'mock-refresh-token',
+  login: async (email: string, password: string) => {
+    const response = await fetch(`${API_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Login failed' }))
+      throw new Error(error.error || error.message || 'Login failed')
     }
+
+    const data = await response.json()
+    
+    // Store tokens
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('access_token', data.access_token)
+      if (data.refresh_token) {
+        localStorage.setItem('refresh_token', data.refresh_token)
+      }
+    }
+
+    return data
   },
+
   register: async (
     email: string,
     username: string,
-    _password: string,
+    password: string,
     full_name: string
   ) => {
-    // Mock implementation
-    return {
-      user: {
-        id: '1',
-        email,
-        username,
-        full_name,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      access_token: 'mock-access-token',
-      refresh_token: 'mock-refresh-token',
+    const response = await fetch(`${API_URL}/api/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, username, password, full_name }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Registration failed' }))
+      throw new Error(error.error || error.message || 'Registration failed')
+    }
+
+    const data = await response.json()
+    
+    // Store tokens
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('access_token', data.access_token)
+      if (data.refresh_token) {
+        localStorage.setItem('refresh_token', data.refresh_token)
+      }
+    }
+
+    return data
+  },
+
+  logout: () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
     }
   },
 }
@@ -52,106 +111,88 @@ export const authApi = {
 // Projects API
 export const projectsApi = {
   list: async (params?: { page?: number; status?: string }) => {
-    // Mock implementation with pagination
-    const filtered =
-      params?.status && params.status !== 'all'
-        ? mockProjects.filter((p) => p.status === params.status)
-        : mockProjects
-    return {
-      projects: filtered,
-      total: filtered.length,
-      page: params?.page || 1,
-      total_pages: 1,
-    }
+    const queryParams = new URLSearchParams()
+    if (params?.page) queryParams.append('page', params.page.toString())
+    if (params?.status && params.status !== 'all') queryParams.append('status', params.status)
+    
+    const url = `${API_URL}/api/projects${queryParams.toString() ? '?' + queryParams.toString() : ''}`
+    return fetchWithAuth(url)
   },
+
   getAll: async () => {
-    // Mock implementation
-    return mockProjects
+    return fetchWithAuth(`${API_URL}/api/projects`)
   },
+
   get: async (id: string) => {
-    // Mock implementation
-    return mockProjects.find((p) => p.id === id) || null
+    return fetchWithAuth(`${API_URL}/api/projects/${id}`)
   },
+
   create: async (data: Partial<Project>) => {
-    // Mock implementation
-    const newProject = { id: Date.now().toString(), ...data } as Project
-    mockProjects.push(newProject)
-    return newProject
+    return fetchWithAuth(`${API_URL}/api/projects`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
   },
+
   update: async (id: string, data: Partial<Project>) => {
-    // Mock implementation
-    const index = mockProjects.findIndex((p) => p.id === id)
-    if (index >= 0) {
-      mockProjects[index] = { ...mockProjects[index], ...data }
-      return mockProjects[index]
-    }
-    return null
+    return fetchWithAuth(`${API_URL}/api/projects/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    })
   },
+
   delete: async (id: string) => {
-    // Mock implementation
-    const index = mockProjects.findIndex((p) => p.id === id)
-    if (index >= 0) {
-      mockProjects.splice(index, 1)
-    }
+    return fetchWithAuth(`${API_URL}/api/projects/${id}`, {
+      method: 'DELETE',
+    })
   },
 }
 
 // Tasks API
 export const tasksApi = {
   getByProject: async (projectId: string) => {
-    // Mock implementation
-    return mockTasks.filter((t) => t.project_id === projectId)
+    return fetchWithAuth(`${API_URL}/api/projects/${projectId}/tasks`)
   },
+
   get: async (taskId: string) => {
-    // Mock implementation
-    return mockTasks.find((t) => t.id === taskId) || null
+    return fetchWithAuth(`${API_URL}/api/tasks/${taskId}`)
   },
+
   create: async (data: Partial<Task>) => {
-    // Mock implementation
-    const newTask = { id: Date.now().toString(), ...data } as Task
-    mockTasks.push(newTask)
-    return newTask
+    return fetchWithAuth(`${API_URL}/api/tasks`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
   },
+
   update: async (taskId: string, data: Partial<Record<string, unknown>>) => {
-    // Mock implementation
-    return { id: taskId, ...data }
+    return fetchWithAuth(`${API_URL}/api/tasks/${taskId}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    })
   },
+
   delete: async (id: string) => {
-    // Mock implementation
-    const index = mockTasks.findIndex((t) => t.id === id)
-    if (index >= 0) {
-      mockTasks.splice(index, 1)
-    }
+    return fetchWithAuth(`${API_URL}/api/tasks/${id}`, {
+      method: 'DELETE',
+    })
   },
+
   addComment: async (taskId: string, content: string) => {
-    // Mock implementation
-    return {
-      id: Date.now().toString(),
-      task_id: taskId,
-      user_id: '1',
-      content,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      user: {
-        id: '1',
-        email: 'user@example.com',
-        username: 'user',
-        full_name: 'Test User',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-    }
+    return fetchWithAuth(`${API_URL}/api/tasks/${taskId}/comments`, {
+      method: 'POST',
+      body: JSON.stringify({ content }),
+    })
   },
 }
 
 // Users API
 export const usersApi = {
   getAll: async () => {
-    // Mock implementation
-    return mockUsers
+    return fetchWithAuth(`${API_URL}/api/users`)
   },
+
   list: async () => {
-    // Mock implementation
-    return mockUsers
+    return fetchWithAuth(`${API_URL}/api/users`)
   },
 }
