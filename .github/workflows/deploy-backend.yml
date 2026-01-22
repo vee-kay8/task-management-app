@@ -56,32 +56,40 @@ jobs:
           --task-definition ${{ env.ECS_TASK_DEFINITION }} \
           --query taskDefinition > task-definition.json
 
-    - name: Clean task definition (remove incompatible fields)
+    - name: Clean task definition and update environment variables
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
       run: |
-        jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection)' \
-          task-definition.json > task-definition-clean.json
-        mv task-definition-clean.json task-definition.json
+        # Remove incompatible fields and update image + environment variables
+        jq --arg IMAGE "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" \
+           --arg DB_URL "${{ secrets.DATABASE_URL }}" \
+           --arg SECRET "${{ secrets.SECRET_KEY }}" \
+           --arg JWT_SECRET "${{ secrets.JWT_SECRET_KEY }}" \
+           'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection) |
+            .containerDefinitions[0].image = $IMAGE |
+            .containerDefinitions[0].environment = [
+              {"name": "DATABASE_URL", "value": $DB_URL},
+              {"name": "FLASK_ENV", "value": "production"},
+              {"name": "SECRET_KEY", "value": $SECRET},
+              {"name": "JWT_SECRET_KEY", "value": $JWT_SECRET},
+              {"name": "JWT_ACCESS_TOKEN_EXPIRES", "value": "3600"},
+              {"name": "CORS_ORIGINS", "value": "https://app.techveesolutions.com"},
+              {"name": "DEBUG", "value": "0"}
+            ]' task-definition.json > task-definition-updated.json
 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: task-definition.json
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
-        environment-variables: |
-          DATABASE_URL=${{ secrets.DATABASE_URL }}
-          FLASK_ENV=production
-          SECRET_KEY=${{ secrets.SECRET_KEY }}
-          JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
-          JWT_ACCESS_TOKEN_EXPIRES=24
-          CORS_ORIGINS=*
-          DEBUG=False
+    - name: Register new task definition
+      run: |
+        aws ecs register-task-definition \
+          --cli-input-json file://task-definition-updated.json \
+          --region ${{ env.AWS_REGION }} > new-task-def.json
+        echo "Task definition registered:"
+        jq -r '.taskDefinition.taskDefinitionArn' new-task-def.json
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        task-definition: task-definition-updated.json
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
