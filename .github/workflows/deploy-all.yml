@@ -1,0 +1,14 @@
+name: Deploy All Services
+
+on:
+  workflow_dispatch:  # Manual trigger only
+  
+jobs:
+  deploy-backend:
+    uses: ./.github/workflows/deploy-backend.yml
+    secrets: inherit
+    
+  deploy-frontend:
+    uses: ./.github/workflows/deploy-frontend.yml
+    secrets: inherit
+    needs: deploy-backend
