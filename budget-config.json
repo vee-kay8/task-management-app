@@ -1,0 +1,14 @@
+{
+  "BudgetName": "TaskApp-Monthly-Budget",
+  "BudgetLimit": {
+    "Amount": "100",
+    "Unit": "USD"
+  },
+  "TimeUnit": "MONTHLY",
+  "BudgetType": "COST",
+  "CostTypes": {
+    "IncludeTax": true,
+    "IncludeSubscription": true,
+    "UseBlended": false
+  }
+}
