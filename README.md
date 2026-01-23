@@ -331,10 +331,43 @@ For more issues, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 
 ---
 
+## � Documentation
+
+### Main Documentation
+- **[AWS Deployment Roadmap](AWS_DEPLOYMENT_ROADMAP.md)** - Complete 12-phase AWS deployment guide
+- **[Deployment Guide](DEPLOYMENT.md)** - Production deployment instructions
+- **[Security Documentation](SECURITY.md)** - Security best practices
+
+### Detailed Guides
+- **[AWS Phase Guides](docs/aws-guides/)** - Step-by-step guides for each deployment phase
+- **[Completion Reports](docs/completion-reports/)** - Phase completion summaries
+- **[Medium Article](docs/articles/MEDIUM_ARTICLE.md)** - Complete deployment journey story
+
+### AWS Configuration
+- **[AWS Config Files](aws/config/)** - Auto-scaling, budgets, and infrastructure configs
+
+---
+
+## ☁️ Cloud Deployment
+
+**Live Production Application:** https://app.techveesolutions.com
+
+The application is deployed on AWS with:
+- Multi-AZ high availability
+- Auto-scaling (1-4 tasks per service)
+- Zero-downtime CI/CD deployments
+- Cost-optimized infrastructure (~$92/month)
+- CloudWatch monitoring and alarms
+
+See [AWS_DEPLOYMENT_ROADMAP.md](AWS_DEPLOYMENT_ROADMAP.md) for complete deployment documentation.
+
+---
+
 ## 📝 Version
 
 **Current Version:** 1.0.0  
-**Last Updated:** January 10, 2026
+**Last Updated:** January 22, 2026  
+**Deployment Status:** 11/12 phases complete (92%)
 
 ---
 
