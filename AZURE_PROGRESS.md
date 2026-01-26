@@ -1,8 +1,8 @@
 # Azure Deployment Progress Tracker
 
 **Last Updated**: January 26, 2026  
-**Current Phase**: Phase 1 - Account Setup & Prerequisites  
-**Status**: ✅ COMPLETE
+**Current Phase**: Phase 3 - Database Layer  
+**Status**: 🔄 IN PROGRESS
 
 ---
 
@@ -23,6 +23,36 @@
 
 ---
 
+## Phase 2: Virtual Network Setup ✅
+
+### Completed Tasks
+- [x] Created Resource Group (rg-taskapp-prod)
+- [x] Applied tags (Environment, Project, ManagedBy, CostCenter)
+- [x] Created Virtual Network (vnet-taskapp) with 10.0.0.0/16
+- [x] Created Container Apps subnet (10.0.1.0/24)
+- [x] Created Database subnet (10.0.2.0/24) with PostgreSQL delegation
+- [x] Created Network Security Group for Container Apps
+- [x] Created Network Security Group for Database
+- [x] Configured NSG rules (HTTP/HTTPS, PostgreSQL)
+- [x] Associated NSGs with subnets
+- [x] Verified network setup
+
+**Phase 2 Completion Date**: January 26, 2026
+
+### Network Resources Created
+- **Resource Group**: rg-taskapp-prod (East US)
+- **Virtual Network**: vnet-taskapp (10.0.0.0/16)
+- **Subnets**:
+  - subnet-container-apps: 10.0.1.0/24
+  - subnet-database: 10.0.2.0/24 (delegated to PostgreSQL)
+- **NSGs**:
+  - nsg-container-apps (HTTP 80, HTTPS 443)
+  - nsg-database (PostgreSQL 5432 from 10.0.1.0/24)
+
+**Cost**: $0 (VNet and NSGs are free)
+
+---
+
 ## Account Information
 
 **Subscription Details**:
@@ -36,7 +66,8 @@
 
 **Selected Configuration**:
 - **Primary Region**: East US (eastus)
-- **Resource Group**: rg-taskapp-prod (to be created in Phase 2)
+- **Resource Group**: rg-taskapp-prod ✅
+- **Virtual Network**: vnet-taskapp (10.0.0.0/16) ✅
 
 ---
 
@@ -94,22 +125,29 @@ az containerapp logs show --name ca-taskapp-backend --resource-group rg-taskapp-
 
 ## Next Steps
 
-### Phase 2: Virtual Network Setup (Not Started)
+### Phase 3: Database Layer (In Progress)
 **Estimated Time**: 2-3 hours
 
 **What You'll Do**:
-- [ ] Create Resource Group (rg-taskapp-prod)
-- [ ] Create Virtual Network (vnet-taskapp)
-- [ ] Create subnets for Container Apps and Database
-- [ ] Configure Network Security Groups (NSGs)
-- [ ] Document network architecture
+- [ ] Create Azure Database for PostgreSQL Flexible Server
+- [ ] Configure VNet integration (private access)
+- [ ] Initialize database schema
+- [ ] Store credentials in temporary file (Key Vault in Phase 5)
+- [ ] Test database connectivity
+- [ ] Document connection details
 
 **First Command to Run**:
 ```bash
-az group create --name rg-taskapp-prod --location eastus
+az postgres flexible-server create \
+  --resource-group rg-taskapp-prod \
+  --name taskapp-db-<unique-suffix> \
+  --location eastus \
+  --admin-user taskapp_admin \
+  --vnet vnet-taskapp \
+  --subnet subnet-database
 ```
 
-**Guide**: See `AZURE_PHASE_2_GUIDE.md` (to be created)
+**Guide**: See `AZURE_PHASE_3_GUIDE.md`
 
 ---
 
@@ -135,8 +173,8 @@ Then run: `source ~/.bashrc`
 | Phase | Status | Completion Date |
 |-------|--------|-----------------|
 | Phase 1: Account Setup | ✅ Complete | Jan 26, 2026 |
-| Phase 2: Networking | 🔲 Not Started | - |
-| Phase 3: Database | 🔲 Not Started | - |
+| Phase 2: Networking | ✅ Complete | Jan 26, 2026 |
+| Phase 3: Database | 🔄 In Progress | - |
 | Phase 4: Container Registry | 🔲 Not Started | - |
 | Phase 5: Key Vault | 🔲 Not Started | - |
 | Phase 6: Backend Deployment | 🔲 Not Started | - |
@@ -148,7 +186,7 @@ Then run: `source ~/.bashrc`
 | Phase 12: Cost Optimization | 🔲 Not Started | - |
 | Phase 13: Documentation | 🔲 Not Started | - |
 
-**Overall Progress**: 1/13 phases complete (7.7%)
+**Overall Progress**: 2/13 phases complete (15.4%)
 
 ---
 

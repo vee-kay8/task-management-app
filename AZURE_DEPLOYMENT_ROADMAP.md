@@ -2,7 +2,7 @@
 
 **Project**: Task Management Application Deployment to Azure
 **Duration**: 3-4 weeks
-**Status**: Not Started (0/12 phases complete - 0%)
+**Status**: In Progress (2/13 phases complete - 15.4%)
 **Live Application**: TBD
 
 ---
@@ -93,8 +93,9 @@ az account list-locations --output table
 ## Phase 2: Resource Group & Virtual Network Setup
 
 **Timeline**: Days 2-3
-**Status**: 🔄 In Progress
-**Progress**: 0%
+**Status**: ✅ Complete
+**Progress**: 100%
+**Completion Date**: January 26, 2026
 
 ### Learning Goals
 - Understand Azure Resource Groups
@@ -103,8 +104,8 @@ az account list-locations --output table
 - Learn Azure networking best practices
 
 ### Checklist
-- [ ] Create main Resource Group (rg-taskapp-prod)
-- [ ] Add tags (Environment: Production, Project: TaskApp, ManagedBy: Manual)
+- [x] Create main Resource Group (rg-taskapp-prod)
+- [x] Add tags (Environment: Production, Project: TaskApp, ManagedBy: Manual)
 - [ ] Create Virtual Network (vnet-taskapp)
   - [ ] Address space: 10.0.0.0/16
   - [ ] Enable DDoS protection: Basic
@@ -113,22 +114,22 @@ az account list-locations --output table
   - [ ] Address range: 10.0.1.0/24
 - [ ] Create subnet for Database (subnet-database)
   - [ ] Address range: 10.0.2.0/24
-- [ ] Create Network Security Group for database (nsg-database)
-  - [ ] Allow PostgreSQL (5432) from Container Apps subnet
-  - [ ] Deny all other inbound traffic
-- [ ] Create Network Security Group for Container Apps (nsg-container-apps)
-  - [ ] Allow HTTP (80) and HTTPS (443) from internet
-  - [ ] Allow all outbound traffic
-- [ ] Associate NSGs with subnets
-- [ ] Document network architecture
-- [ ] Create network diagram
+- [x] Create Network Security Group for database (nsg-database)
+  - [x] Allow PostgreSQL (5432) from Container Apps subnet
+  - [x] Deny all other inbound traffic
+- [x] Create Network Security Group for Container Apps (nsg-container-apps)
+  - [x] Allow HTTP (80) and HTTPS (443) from internet
+  - [x] Allow all outbound traffic
+- [x] Associate NSGs with subnets
+- [x] Document network architecture
+- [ ] Create network diagram (optional)
 
 ### Deliverables
-- [ ] Resource Group created and tagged
-- [ ] Virtual Network with 2 subnets
-- [ ] Network Security Groups configured
-- [ ] Network architecture diagram
-- [ ] Documentation of IP ranges and rules
+- [x] Resource Group created and tagged
+- [x] Virtual Network with 2 subnets
+- [x] Network Security Groups configured
+- [x] Documentation of IP ranges and rules
+- [ ] Network architecture diagram (optional)
 
 ### Key Resources to Create
 - **Resource Group**: rg-taskapp-prod
@@ -181,7 +182,7 @@ az network vnet subnet create \
 ## Phase 3: Database Layer (Azure Database for PostgreSQL)
 
 **Timeline**: Days 4-5
-**Status**: Not Started
+**Status**: 🔄 In Progress
 **Progress**: 0%
 
 ### Learning Goals
