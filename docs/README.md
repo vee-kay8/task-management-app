@@ -31,7 +31,7 @@ Summary documents marking the completion of major phases with achievements, chal
 ### articles/
 Published or publishable articles about the project.
 
-- Medium Article: Complete deployment journey narrative
+- Medium Article: Complete deployment journey narrative.
 
 ## Quick Links
 
