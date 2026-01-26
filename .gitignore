@@ -78,3 +78,31 @@ attachments/
 
 # Docker
 docker-compose.override.yml
+
+# ============================================================
+# Azure specific
+# ============================================================
+azure/bicep/*.parameters.json
+!azure/bicep/main.parameters.json
+*.bicepparam
+.azure/
+azure-pipelines.yml
+
+# Terraform (if using Terraform instead of Bicep)
+azure/terraform/.terraform/
+azure/terraform/terraform.tfstate
+azure/terraform/terraform.tfstate.backup
+azure/terraform/.terraform.lock.hcl
+azure/terraform/*.tfvars
+!azure/terraform/*.tfvars.example
+
+# Environment files
+.env.azure
+.env.azure.local
+
+# Azure Functions (if used later)
+local.settings.json
+__blobstorage__/
+__queuestorage__/
+__azurite_db*__.json
+.python_packages/
