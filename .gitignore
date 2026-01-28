@@ -106,3 +106,8 @@ __blobstorage__/
 __queuestorage__/
 __azurite_db*__.json
 .python_packages/
+
+# Azure credentials and secrets (never commit!)
+azure/config/*credentials*.txt
+azure/config/*secrets*.txt
+azure/config/*.key
