@@ -1,0 +1,12 @@
+Azure Container Registry Details
+=================================
+Registry Name: taskappacr2026
+Login Server: taskappacr026.azurecr.io
+Location: Central US
+SKU: Basic
+Admin User Enabled: Yes
+
+Created: Thu, Jan 29, 2026  9:45:50 AM
+
+Note: Admin credentials available via:
+az acr credential show --name YOUR-REGISTRY-NAME --resource-group rg-taskapp-prod

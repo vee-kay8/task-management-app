@@ -1,0 +1,44 @@
+Azure Container Registry - Image References
+============================================
+Created: January 29, 2026
+Registry: taskappacr2026.azurecr.io
+
+BACKEND IMAGES
+--------------
+Repository: taskapp-backend
+Tags: latest, v1.0.0
+Size: ~350 MB
+
+Full Image URIs:
+- taskappacr2026.azurecr.io/taskapp-backend:latest
+- taskappacr2026.azurecr.io/taskapp-backend:v1.0.0
+
+FRONTEND IMAGES
+---------------
+Repository: taskapp-frontend
+Tags: latest, v1.0.0
+Size: ~212 MB
+
+Full Image URIs:
+- taskappacr2026.azurecr.io/taskapp-frontend:latest
+- taskappacr2026.azurecr.io/taskapp-frontend:v1.0.0
+
+USAGE IN AZURE CONTAINER APPS
+------------------------------
+When creating Container Apps in Phase 6-7, use these image references.
+
+For production deployments, prefer versioned tags (v1.0.0) over 'latest'
+for predictable deployments and easier rollbacks.
+
+VERIFICATION COMMANDS
+---------------------
+# List repositories
+az acr repository list --name taskappacr2026 --output table
+
+# Show tags
+az acr repository show-tags --name taskappacr2026 --repository taskapp-backend --output table
+az acr repository show-tags --name taskappacr2026 --repository taskapp-frontend --output table
+
+# Pull images (requires authentication)
+docker pull taskappacr2026.azurecr.io/taskapp-backend:v1.0.0
+docker pull taskappacr2026.azurecr.io/taskapp-frontend:v1.0.0
