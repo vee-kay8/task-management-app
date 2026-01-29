@@ -1,0 +1,34 @@
+Azure Key Vault Quick Reference
+================================
+Vault Name: kv-taskapp-2026
+Vault URI: https://kv-taskapp-2026.vault.azure.net/
+Location: Central US
+
+SECRETS (5 total)
+-----------------
+✓ db-host            PostgreSQL server hostname
+✓ db-name            Database name (postgres)
+✓ db-user            Database username (taskapp_admin)
+✓ db-password        Database password
+✓ jwt-secret-key     JWT signing key (64-char hex)
+
+QUICK COMMANDS
+--------------
+# List secrets
+az keyvault secret list --vault-name kv-taskapp-2026 --output table
+
+# Get secret value
+az keyvault secret show --vault-name kv-taskapp-2026 --name SECRET-NAME --query value -o tsv
+
+# Update secret
+az keyvault secret set --vault-name kv-taskapp-2026 --name SECRET-NAME --value "VALUE"
+
+NEXT PHASE
+----------
+Phase 6: Backend Deployment
+- Create Container Apps Environment
+- Deploy backend with managed identity
+- Configure Key Vault references
+- Backend will auto-fetch secrets using managed identity
+
+Created: Thu, Jan 29, 2026 10:59:10 AM

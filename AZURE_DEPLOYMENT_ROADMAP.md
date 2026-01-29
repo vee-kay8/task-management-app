@@ -2,7 +2,7 @@
 
 **Project**: Task Management Application Deployment to Azure
 **Duration**: 3-4 weeks
-**Status**: In Progress (3/13 phases complete - 23.1%)
+**Status**: In Progress (4/13 phases complete - 30.8%)
 **Live Application**: TBD
 
 ---
@@ -271,8 +271,9 @@ az postgres flexible-server connect \
 ## Phase 4: Azure Container Registry (ACR)
 
 **Timeline**: Day 6
-**Status**: Not Started
-**Progress**: 0%
+**Status**: ✅ Complete
+**Progress**: 100%
+**Completion Date**: January 29, 2026
 
 ### Learning Goals
 - Understand Azure Container Registry tiers
@@ -281,32 +282,38 @@ az postgres flexible-server connect \
 - Learn ACR tasks and image scanning
 
 ### Checklist
-- [ ] Create Azure Container Registry
-  - [ ] Registry name: taskappacr[unique] (must be globally unique)
-  - [ ] SKU: Basic (sufficient for learning, cheapest)
-  - [ ] Admin user: Disabled (use managed identity later)
-  - [ ] Public access: Enabled (for now)
-- [ ] Authenticate Docker to ACR
-- [ ] Tag local backend image for ACR
-- [ ] Tag local frontend image for ACR
-- [ ] Push backend image to ACR
-- [ ] Push frontend image to ACR
-- [ ] Verify images in Azure Portal
-- [ ] Enable vulnerability scanning (Defender for Cloud - optional)
-- [ ] Document image URIs
-- [ ] Test pulling images from ACR
+- [x] Create Azure Container Registry
+  - [x] Registry name: taskappacr2026 (globally unique)
+  - [x] SKU: Basic (sufficient for learning, cheapest)
+  - [x] Admin user: Enabled (for simplified development)
+  - [x] Public access: Enabled
+- [x] Authenticate Docker to ACR
+- [x] Review Dockerfiles for Azure deployment readiness
+- [x] Build backend Docker image locally
+- [x] Build frontend Docker image locally
+- [x] Tag local backend image for ACR (latest and v1.0.0)
+- [x] Tag local frontend image for ACR (latest and v1.0.0)
+- [x] Push backend image to ACR
+- [x] Push frontend image to ACR
+- [x] Verify images in Azure Portal
+- [x] Document image URIs
+- [x] Test image listing from ACR
 
 ### Deliverables
-- [ ] ACR created and configured
-- [ ] Backend and frontend images pushed
-- [ ] Image URIs documented
-- [ ] Authentication working
+- [x] ACR created and configured (taskappacr2026)
+- [x] Backend and frontend images pushed (4 total: 2 repos × 2 tags)
+- [x] Image URIs documented in azure/config/acr-image-references.txt
+- [x] Authentication working via Azure CLI
 
-### Key Resources to Create
-- **Container Registry**: taskappacr[unique].azurecr.io
+### Key Resources Created
+- **Container Registry**: taskappacr2026.azurecr.io ✅
+- **Login Server**: taskappacr2026.azurecr.io
+- **Location**: Central US
 - **Images**:
-  - taskappacr[unique].azurecr.io/taskapp-backend:latest
-  - taskappacr[unique].azurecr.io/taskapp-frontend:latest
+  - taskappacr2026.azurecr.io/taskapp-backend:latest (350 MB)
+  - taskappacr2026.azurecr.io/taskapp-backend:v1.0.0 (350 MB)
+  - taskappacr2026.azurecr.io/taskapp-frontend:latest (212 MB)
+  - taskappacr2026.azurecr.io/taskapp-frontend:v1.0.0 (212 MB)
 
 ### Azure-Specific Commands
 ```bash
