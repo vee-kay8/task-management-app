@@ -1,0 +1,12 @@
+Frontend Container App URL
+===========================
+Container App Name: ca-taskapp-frontend
+URL: https://ca-taskapp-frontend.redtree-99ec4a5a.centralus.azurecontainerapps.io
+Backend URL: https://ca-taskapp-backend.redtree-99ec4a5a.centralus.azurecontainerapps.io
+Environment: env-taskapp-prod
+Resource Group: rg-taskapp-prod
+
+Created: $(date)
+
+This is your public application URL!
+EOF
