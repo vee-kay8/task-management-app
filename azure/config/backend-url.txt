@@ -1,0 +1,10 @@
+Backend Container App URL
+==========================
+Container App Name: ca-taskapp-backend
+URL: https://ca-taskapp-backend.purpleground-a372e111.centralus.azurecontainerapps.io
+Environment: env-taskapp-prod
+Resource Group: rg-taskapp-prod
+
+Created: Thu, Jan 29, 2026 12:08:38 PM
+
+Note: This URL will be used by the frontend in Phase 7.

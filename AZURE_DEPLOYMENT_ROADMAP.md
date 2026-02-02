@@ -2,7 +2,7 @@
 
 **Project**: Task Management Application Deployment to Azure
 **Duration**: 3-4 weeks
-**Status**: In Progress (4/13 phases complete - 30.8%)
+**Status**: In Progress (5/13 phases complete - 38.5%)
 **Live Application**: TBD
 
 ---
@@ -353,8 +353,9 @@ az acr repository list --name taskappacr[unique] --output table
 ## Phase 5: Azure Key Vault (Secrets Management)
 
 **Timeline**: Day 7
-**Status**: Not Started
-**Progress**: 0%
+**Status**: ✅ Complete
+**Progress**: 100%
+**Completion Date**: January 29, 2026
 
 ### Learning Goals
 - Understand Azure Key Vault concepts
@@ -363,35 +364,38 @@ az acr repository list --name taskappacr[unique] --output table
 - Learn access policies and RBAC
 
 ### Checklist
-- [ ] Create Azure Key Vault
-  - [ ] Name: kv-taskapp-[unique]
-  - [ ] Enable soft delete (30 days retention)
-  - [ ] Enable purge protection: No (easier for learning)
-  - [ ] Enable RBAC: Yes
-- [ ] Assign yourself "Key Vault Secrets Officer" role
-- [ ] Create secrets in Key Vault
-  - [ ] db-connection-string
-  - [ ] db-password
-  - [ ] secret-key
-  - [ ] jwt-secret-key
-- [ ] Generate secure random values for secrets
-- [ ] Document secret names and versions
-- [ ] Test retrieving secrets via CLI
-- [ ] Prepare for managed identity integration (next phase)
+- [x] Create Azure Key Vault
+  - [x] Name: kv-taskapp-2026
+  - [x] Enable soft delete (30 days retention)
+  - [x] Enable purge protection: No (easier for learning)
+  - [x] Enable RBAC: Yes
+- [x] Assign yourself "Key Vault Secrets Officer" role
+- [x] Create secrets in Key Vault
+  - [x] db-host (PostgreSQL hostname)
+  - [x] db-name (database name)
+  - [x] db-user (admin username)
+  - [x] db-password (admin password)
+  - [x] jwt-secret-key (JWT signing key)
+- [x] Generate secure random values for secrets
+- [x] Document secret names and versions
+- [x] Test retrieving secrets via CLI
+- [x] Prepare for managed identity integration (next phase)
 
 ### Deliverables
-- [ ] Key Vault created and configured
-- [ ] All application secrets stored
-- [ ] Access policies documented
-- [ ] Secret retrieval tested
+- [x] Key Vault created and configured (kv-taskapp-2026)
+- [x] All application secrets stored (5 total)
+- [x] Access policies documented
+- [x] Secret retrieval tested
 
-### Key Resources to Create
-- **Key Vault**: kv-taskapp-[unique]
+### Key Resources Created
+- **Key Vault**: kv-taskapp-2026 ✅
+- **Vault URI**: https://kv-taskapp-2026.vault.azure.net/
 - **Secrets**:
-  - db-connection-string
-  - db-password
-  - secret-key (Flask SECRET_KEY)
-  - jwt-secret-key (JWT signing key)
+  - db-host (PostgreSQL server hostname)
+  - db-name (database name: postgres)
+  - db-user (admin username: taskapp_admin)
+  - db-password (admin password)
+  - jwt-secret-key (JWT signing key - 64-char hex)
 
 ### Azure-Specific Commands
 ```bash
