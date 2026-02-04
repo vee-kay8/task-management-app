@@ -2,7 +2,7 @@
 
 **Project**: Task Management Application Deployment to Azure
 **Duration**: 3-4 weeks
-**Status**: In Progress (6/13 phases complete - 46.2%)
+**Status**: In Progress (7/13 phases complete - 53.8%)
 **Live Application**: TBD
 
 ---
