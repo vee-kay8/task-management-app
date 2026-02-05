@@ -2,8 +2,8 @@
 
 **Project**: Task Management Application Deployment to Azure
 **Duration**: 3-4 weeks
-**Status**: In Progress (7/13 phases complete - 53.8%)
-**Live Application**: TBD
+**Status**: In Progress (8/13 phases complete - 61.5%)
+**Live Application**: https://app.techveesolutions.com
 
 ---
 
