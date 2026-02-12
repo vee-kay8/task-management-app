@@ -128,6 +128,25 @@ docker run --rm python:3.12-alpine python -c 'import secrets; print(secrets.toke
 | [OPERATIONS_RUNBOOK.md](OPERATIONS_RUNBOOK.md) | Operations and maintenance |
 | [SECURITY.md](SECURITY.md) | Security best practices |
 
+### Azure Deployment
+
+| Document | Description |
+|----------|-------------|
+| [AZURE_DEPLOYMENT_ROADMAP.md](AZURE_DEPLOYMENT_ROADMAP.md) | Full Azure deployment roadmap |
+| [AZURE_PHASE_12_GUIDE.md](AZURE_PHASE_12_GUIDE.md) | Cost optimization & autoscaling guide |
+| [AZURE_PHASE_13_GUIDE.md](AZURE_PHASE_13_GUIDE.md) | Documentation & comparison guide |
+| [AZURE_DEPLOYMENT_COMPLETE.md](AZURE_DEPLOYMENT_COMPLETE.md) | Final deployment summary |
+| [azure/docs/azure-architecture.md](azure/docs/azure-architecture.md) | Azure architecture diagram |
+| [azure/docs/network-architecture.md](azure/docs/network-architecture.md) | Network diagram |
+| [azure/docs/data-flow.md](azure/docs/data-flow.md) | Data flow diagram |
+| [azure/docs/azure-resources-inventory.md](azure/docs/azure-resources-inventory.md) | Resource inventory |
+| [azure/docs/troubleshooting.md](azure/docs/troubleshooting.md) | Azure troubleshooting guide |
+| [azure/docs/cost-breakdown.md](azure/docs/cost-breakdown.md) | Cost breakdown |
+| [azure/docs/azure-vs-aws-comparison.md](azure/docs/azure-vs-aws-comparison.md) | Azure vs AWS comparison |
+| [azure/docs/quick-start-azure.md](azure/docs/quick-start-azure.md) | Azure quick-start |
+| [azure/docs/archive-checklist.md](azure/docs/archive-checklist.md) | Archive checklist |
+| [azure/docs/next-steps-gcp.md](azure/docs/next-steps-gcp.md) | GCP next steps |
+
 ### Containerization Phases
 - [CONTAINERIZATION_PHASE1.md](CONTAINERIZATION_PHASE1.md) - Backend
 - [CONTAINERIZATION_PHASE2.md](CONTAINERIZATION_PHASE2.md) - Frontend
