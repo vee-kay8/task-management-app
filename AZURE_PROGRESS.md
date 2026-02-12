@@ -1,7 +1,7 @@
 # Azure Deployment Progress Tracker
 
-**Last Updated**: February 3, 2026  
-**Current Phase**: Phase 9 - Monitoring & Logging  
+**Last Updated**: February 5, 2026  
+**Current Phase**: Phase 11 - CI/CD Integration (GitHub Actions)  
 **Status**: 🔄 IN PROGRESS
 
 ---
@@ -337,18 +337,62 @@ az containerapp logs show --name ca-taskapp-backend --resource-group rg-taskapp-
 
 ## Next Steps
 
-### Phase 9: Monitoring & Logging (Next)
+### Phase 9: Monitoring & Logging ✅
+
+### Completed Tasks
+- [x] Enabled Application Insights for backend
+- [x] Enabled Application Insights for frontend
+- [x] Created Log Analytics queries (errors, response times, failed logins)
+- [x] Created Azure Dashboard for monitoring
+- [x] Configured Action Group for email alerts
+- [x] Created alert rules (CPU, memory, errors, database)
+- [x] Tested monitoring and alerting
+- [x] Verified telemetry data collection
+- [x] Documented monitoring setup
+
+**Phase 9 Completion Date**: February 4, 2026
+
+### Monitoring Resources Created
+- **Application Insights**: appinsights-taskapp-backend, appinsights-taskapp-frontend
+- **Log Analytics Workspace**: (already existed from Phase 6)
+- **Action Group**: ag-taskapp-alerts (email: vokeogigbah@yahoo.com)
+- **Alert Rules**: 5+ alerts configured
+- **Azure Dashboard**: Task Management App - Production
+- **Saved Queries**: Error logs, API response times, failed logins, container restarts
+
+**Cost**: ~$5-15/month (Application Insights + Log Analytics ingestion)
+
+**Notes**:
+- Real-time monitoring with Live Metrics enabled
+- Custom KQL queries for troubleshooting
+- Email notifications working for critical alerts
+- Dashboard provides at-a-glance health status
+
+---
+
+## Next Steps
+
+### Phase 10: Infrastructure as Code (Bicep) ✅
+
+### Completed Tasks
+- [x] Created Bicep directory structure (azure/bicep + modules)
+- [x] Created main template (main.bicep)
+- [x] Created parameters files (main.parameters.json, main.parameters.dev.json)
+- [x] Implemented modules (RG, VNet, DB, ACR, Key Vault, CA Env, CA, Monitoring)
+- [x] Validated templates with az bicep build
+- [x] Ran what-if analysis for preview
+- [x] Documented deployment steps and outputs
+
+**Phase 10 Completion Date**: February 5, 2026
+
+**Notes**:
+- IaC created for repeatable infra deployments
+- No production changes required (current infra remains live)
+
+---
+
+### Phase 11: CI/CD Integration (GitHub Actions) (Next)
 **Estimated Time**: 3-4 hours
-
-**What You'll Do**:
-- [ ] Configure custom domain in Azure Container Apps
-- [ ] Update DNS records in Route 53 (AWS)
-- [ ] Add SSL certificate (managed or custom)
-- [ ] Verify domain ownership
-- [ ] Update frontend environment variables
-- [ ] Test application on custom domain
-
-**Guide**: See `AZURE_PHASE_8_GUIDE.md`
 
 ---
 
@@ -404,13 +448,13 @@ Then run: `source ~/.bashrc`
 | Phase 6: Backend Deployment | ✅ Complete | Feb 1, 2026 |
 | Phase 7: Frontend Deployment | ✅ Complete | Feb 2, 2026 |
 | Phase 8: Domain & SSL | ✅ Complete | Feb 3, 2026 |
-| Phase 9: Monitoring | 🔲 Not Started | - |
-| Phase 10: Infrastructure as Code | 🔲 Not Started | - |
+| Phase 9: Monitoring | ✅ Complete | Feb 4, 2026 |
+| Phase 10: Infrastructure as Code | ✅ Complete | Feb 5, 2026 |
 | Phase 11: CI/CD | 🔲 Not Started | - |
 | Phase 12: Cost Optimization | 🔲 Not Started | - |
 | Phase 13: Documentation | 🔲 Not Started | - |
 
-**Overall Progress**: 8/13 phases complete (61.5%)
+**Overall Progress**: 10/13 phases complete (76.9%)
 
 ---
 
